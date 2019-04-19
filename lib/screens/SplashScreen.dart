@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:exam_app/controllers/SplashScreenController.dart';
 import 'package:exam_app/screens/Login.dart';
-import 'package:exam_app/sdk/api/getSettings.dart';
+import 'package:exam_app/sdk/api/GetSettings.dart';
 import 'package:exam_app/utils/ColorSwatch.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';

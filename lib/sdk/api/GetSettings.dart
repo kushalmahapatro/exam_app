@@ -2,7 +2,7 @@ import 'package:exam_app/sdk/ApiUtils.dart';
 import 'package:exam_app/utils/Constants.dart';
 
 
-Future<GetSettingsModel> getSettingsAPI(
+Future<GetSettingsModel> GetSettingsAPI(
     Map<String, String> parameters, Map<String, String> body) async {
   try {
     return GetSettingsModel.fromJson(await request_POST_header(

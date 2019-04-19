@@ -1,4 +1,4 @@
-import 'package:exam_app/sdk/api/getSettings.dart';
+import 'package:exam_app/sdk/api/GetSettings.dart';
 import 'package:meta/meta.dart';
 import 'package:exam_app/utils/Utils.dart';
 
@@ -9,7 +9,7 @@ class SplashScreenController  {
 
   void callApi() async {
     try {
-      GetSettingsModel getSettings = await getSettingsAPI(
+      GetSettingsModel getSettings = await GetSettingsAPI(
           {"Client-Service": "frontend-client", "Auth-Key" : "simplerestapi"},
           {"module" : "settings", "service" : "getSettings"}
           );
