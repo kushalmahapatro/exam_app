@@ -4,10 +4,8 @@ import 'package:exam_app/utils/Utils.dart';
 
 class SplashScreenController  {
   final SplashScreenListener listener;
-  final PreferenceManager preferenceManager;
 
-  SplashScreenController({@required this.listener})
-      : preferenceManager = PreferenceManager();
+  SplashScreenController({@required this.listener});
 
   void callApi() async {
     try {
