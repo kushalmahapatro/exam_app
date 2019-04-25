@@ -10,8 +10,8 @@ class SplashScreenController  {
   void callApi() async {
     try {
       GetSettingsModel getSettings = await GetSettingsAPI(
-          {"Client-Service": "frontend-client", "Auth-Key" : "simplerestapi"},
-          {"module" : "settings", "service" : "getSettings"}
+          {'Client-Service': 'frontend-client', 'Auth-Key' : 'simplerestapi', 'Content-Type':'application/x-www-form-urlencoded'},
+          {'module' : 'settings', 'service' : 'getSettings'}
           );
       listener.onApiSuccess(model: getSettings);
       await new Future.delayed(const Duration(milliseconds: 3000));

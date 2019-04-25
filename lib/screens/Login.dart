@@ -1,4 +1,5 @@
 import 'package:exam_app/screens/Assessor.dart';
+import 'package:exam_app/screens/Student.dart';
 import 'package:exam_app/utils/ColorSwatch.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +39,10 @@ class _LoginState extends State<Login> {
             Padding(
               padding: EdgeInsets.all(10.0),
               child: RaisedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context,
+                      new MaterialPageRoute(builder: (c) => new Student()));
+                },
                 child: Text("Student Login"),
               ),
             )

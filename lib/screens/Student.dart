@@ -5,17 +5,17 @@ import 'package:exam_app/sdk/api/GetAssessorLogin.dart';
 import 'package:exam_app/utils/ColorSwatch.dart';
 import 'package:flutter/material.dart';
 
-class Assessor extends StatefulWidget {
-  Assessor({Key key}) : super(key: key);
+class Student extends StatefulWidget {
+  Student({Key key}) : super(key: key);
 
   @override
-  _AssessorState createState() {
-    return _AssessorState();
+  _StudentState createState() {
+    return _StudentState();
   }
 
 }
 
-class _AssessorState extends State<Assessor> implements AssessorPageListener , AssessorLoginListener{
+class _StudentState extends State<Student> implements AssessorPageListener , AssessorLoginListener{
   AssessorPageController controller;
   AssessorLoginController loginController;
   bool apiCalled = false;
@@ -26,7 +26,7 @@ class _AssessorState extends State<Assessor> implements AssessorPageListener , A
   BuildContext _scaffoldContext;
   Scaffold scaffold;
 
-  _AssessorState(){
+  _StudentState(){
     controller = AssessorPageController(listener: this);
     loginController = AssessorLoginController(listener: this);
     controller.callAPI();
@@ -121,7 +121,7 @@ class _AssessorState extends State<Assessor> implements AssessorPageListener , A
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
-              padding: EdgeInsets.all(10.0), child: Text("Assessor Login", style: TextStyle(
+              padding: EdgeInsets.all(10.0), child: Text("Student Login", style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w500,
               fontSize: 30.0),)),
@@ -131,6 +131,9 @@ class _AssessorState extends State<Assessor> implements AssessorPageListener , A
           Padding(
               padding: EdgeInsets.all(10.0),
               child: apiCalled ? inputField() : Container()),
+          Padding(
+              padding: EdgeInsets.all(10.0),
+              child: apiCalled ? dropDown() : Container()),
           Padding(padding: EdgeInsets.all(10.0),
               child: apiCalled? RaisedButton(onPressed: (){
                 loginController.callAPI(id[_id].id, pin);
