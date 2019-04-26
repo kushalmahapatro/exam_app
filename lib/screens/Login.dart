@@ -1,4 +1,5 @@
 import 'package:exam_app/screens/Assessor.dart';
+import 'package:exam_app/screens/VivaAndTheoryManagement.dart';
 import 'package:exam_app/screens/Student.dart';
 import 'package:exam_app/utils/ColorSwatch.dart';
 import 'package:flutter/material.dart';

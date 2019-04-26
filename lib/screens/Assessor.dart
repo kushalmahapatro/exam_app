@@ -1,5 +1,6 @@
 import 'package:exam_app/controllers/AssessorLoginController.dart';
 import 'package:exam_app/controllers/AssessorPageController.dart';
+import 'package:exam_app/screens/VivaAndTheoryManagement.dart';
 import 'package:exam_app/sdk/api/GetAssessor.dart';
 import 'package:exam_app/sdk/api/GetAssessorLogin.dart';
 import 'package:exam_app/utils/ColorSwatch.dart';
@@ -170,9 +171,17 @@ class _AssessorState extends State<Assessor> implements AssessorPageListener , A
 
   @override
   void onLoginSuccess({GetAssessorLoginModel model}) {
-    Scaffold.of(_scaffoldContext).showSnackBar( SnackBar(
-        content:  Text(model.responseMessage)
-    ));
+    if(model.responseCode==200){
+      Scaffold.of(_scaffoldContext).showSnackBar( SnackBar(
+          content:  Text(model.responseMessage)
+      ));
+      Navigator.push(context, new MaterialPageRoute(builder: (c)=> new VivaAndTheoryManagement()));
+    }else{
+      Scaffold.of(_scaffoldContext).showSnackBar( SnackBar(
+          content:  Text(model.responseMessage)
+      ));
+    }
+
   }
 }
 
