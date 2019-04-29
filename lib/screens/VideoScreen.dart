@@ -6,15 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:exam_app/screens/InstuctionScreen.dart';
 
-class InstuctionScreen extends StatefulWidget {
+class VideoScreen extends StatefulWidget {
   @override
-  _InstuctionScreenState createState() {
-    return _InstuctionScreenState();
+  _VideoScreenState createState() {
+    return _VideoScreenState();
   }
 }
 
-class _InstuctionScreenState extends State<InstuctionScreen> {
+class _VideoScreenState extends State<VideoScreen> {
   CameraController controller;
   String videoPath;
 
@@ -242,8 +243,15 @@ class _InstuctionScreenState extends State<InstuctionScreen> {
             timeInSecForIos: 1,
             backgroundColor: Colors.grey,
             textColor: Colors.white
+
         );
       }
+      Timer timer = new Timer(new Duration(seconds: 5), () {
+
+        debugPrint("Print after 5 seconds");
+        _onStopButtonPressed();
+      });
+
     });
   }
 
@@ -258,6 +266,7 @@ class _InstuctionScreenState extends State<InstuctionScreen> {
           backgroundColor: Colors.grey,
           textColor: Colors.white
       );
+      Navigator.push(context, new MaterialPageRoute(builder: (c)=> new InstuctionScreen()));
     });
   }
 
@@ -279,12 +288,12 @@ class _InstuctionScreenState extends State<InstuctionScreen> {
     if (controller.value.isRecordingVideo) {
       return null;
     }
-
+    var dir = await getExternalStorageDirectory();
     final Directory appDirectory = await getApplicationDocumentsDirectory();
     final String videoDirectory = '${appDirectory.path}/Videos';
     await Directory(videoDirectory).create(recursive: true);
     final String currentTime = DateTime.now().millisecondsSinceEpoch.toString();
-    final String filePath = '$videoDirectory/${currentTime}.mp4';
+    final String filePath = '${dir.path}/Assesmentportal/${currentTime}.mp4';
 
     try {
       await controller.startVideoRecording(filePath);
@@ -329,7 +338,7 @@ class VideoRecorderApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: InstuctionScreen(),
+      home: VideoScreen(),
     );
   }
 }

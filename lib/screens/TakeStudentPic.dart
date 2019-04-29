@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:exam_app/screens/InstructionScreen.dart';
+import 'package:exam_app/screens/VideoScreen.dart';
+//import 'package:simple_permissions/simple_permissions.dart';
 
 void main() {
   runApp(new TakeStudentPic());
@@ -26,6 +27,8 @@ class UserOptions extends StatefulWidget {
 }
 
 class UserOptionsState extends State<UserOptions> {
+  var knockDir;
+  var dir;
 //save the result of gallery file
   File profileFile;
 
@@ -53,21 +56,27 @@ class UserOptionsState extends State<UserOptions> {
         //maxHeight: 50.0,
         //maxWidth: 50.0,
       );
+      //requestPermission();
+      dir = await getExternalStorageDirectory();
+      knockDir =
+      await new Directory('${dir.path}/Assesmentportal').create(recursive: true);
+      print("directory=="+knockDir.toString());
       //final dir = await getExternalStorageDirectory();
-      //final String path = dir.path;
-      //final File finalImage = await cameraFile.copy('$path/image1.png');
-     // print("path== " + path);
+      final String path = dir.path;
+      final File finalImage = await adhaarFile.copy('${knockDir.path}/adhaar.png');
+      print("path== " + path);
       print("You selected camera image : " + adhaarFile.path);
       setState(() {
         //_image = finalImage;
       });
-      //setState(() {});
     }
     imageSelectorProfile() async {
       File _image;
       profileFile = await ImagePicker.pickImage(
         source: ImageSource.camera,
       );
+      final String path = dir.path;
+      final File finalImage = await profileFile.copy('${knockDir.path}/profile.png');
       print("You selected camera image : " + profileFile.path);
       setState(() {
         //_image = finalImage;
@@ -132,7 +141,7 @@ class UserOptionsState extends State<UserOptions> {
                       child: new RaisedButton(
                         child: new Text('Next'),
                         onPressed: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (c)=>InstuctionScreen()));
+                          Navigator.push(context,MaterialPageRoute(builder: (c)=>VideoScreen()));
                         },
                       ),
                     ),
@@ -145,13 +154,15 @@ class UserOptionsState extends State<UserOptions> {
       ),
     );
   }
-
+ /* void requestPermission() async{
+    Permission permission;
+    PermissionStatus result = await SimplePermissions.requestPermission(permission);
+    print("request :"+ result.toString());
+  }*/
   Widget displaySelectedFile(File file) {
     return new SizedBox(
       height: 150.0,
       width: 100.0,
-//child: new Card(child: new Text(''+galleryFile.toString())),
-//child: new Image.file(galleryFile),
       child: file == null
           ? new Text('select image')
           : new Image.file(file),

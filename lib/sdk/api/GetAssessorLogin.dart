@@ -13,11 +13,11 @@ Future<GetAssessorLoginModel> getAssessorLoginAPI(
   return null;
 }
 
-/*class GetAssessorLoginModel {
+class GetAssessorLoginModel {
   int responseCode;
   bool responseStatus;
   String responseMessage;
-  String response;
+  Response response;
 
   GetAssessorLoginModel(
       {this.responseCode,
@@ -31,11 +31,11 @@ Future<GetAssessorLoginModel> getAssessorLoginAPI(
     responseStatus = json['ResponseStatus'];
     responseMessage = json['ResponseMessage'];
     if (json['Response'] != null) {
-      response = json['Response'].toString();
+      response = Response.fromJson(json['Response']);
     }
   }
-}*/
-class GetAssessorLoginModel {
+}
+/*class GetAssessorLoginModel {
   int responseCode;
   bool responseStatus;
   String responseMessage;
@@ -71,7 +71,7 @@ class GetAssessorLoginModel {
     }
     return data;
   }
-}
+}*/
 
 class Response {
   String userId;
