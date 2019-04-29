@@ -1,6 +1,7 @@
 import 'package:exam_app/controllers/AssessorLoginController.dart';
 import 'package:exam_app/controllers/AssessorPageController.dart';
 import 'package:exam_app/sdk/api/GetAssessor.dart';
+import 'package:exam_app/screens/TakeStudentPic.dart';
 import 'package:exam_app/sdk/api/GetAssessorLogin.dart';
 import 'package:exam_app/utils/ColorSwatch.dart';
 import 'package:flutter/material.dart';
@@ -173,6 +174,7 @@ class _StudentState extends State<Student> implements AssessorPageListener , Ass
 
   @override
   void onLoginSuccess({GetAssessorLoginModel model}) {
+    Navigator.push(context, new MaterialPageRoute(builder: (c)=> new TakeStudentPic()));
     Scaffold.of(_scaffoldContext).showSnackBar( SnackBar(
         content:  Text(model.responseMessage)
     ));

@@ -1,16 +1,21 @@
+import 'package:exam_app/sdk/api/GetAssessorLogin.dart';
 import 'package:flutter/material.dart';
 import 'package:exam_app/utils/ColorSwatch.dart';
 import 'package:exam_app/model/city.dart';
 
 class AddDevice extends StatefulWidget {
-
+  GetAssessorLoginModel model;
+  AddDevice({Key key, this.model }) : super(key: key);
   @override
-  _AddDeviceState createState() => _AddDeviceState();
+  _AddDeviceState createState() => _AddDeviceState(model);
 }
 
 class _AddDeviceState extends State<AddDevice> {
   final List<City> _allCities = City.allCities();
   BuildContext _scaffoldContext;
+  GetAssessorLoginModel model;
+
+  _AddDeviceState(this.model);
   @override
   Widget build(BuildContext context) {
     _scaffoldContext = context;
@@ -31,7 +36,7 @@ class _AddDeviceState extends State<AddDevice> {
 
   getHomePageBody(BuildContext context) {
     return ListView.builder(
-      itemCount: _allCities.length,
+      itemCount: model.response.eventData.students.length,
       itemBuilder: _getItemUI,
       padding: EdgeInsets.all(0.0),
     );
@@ -45,7 +50,7 @@ class _AddDeviceState extends State<AddDevice> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(10.0),
-            child:  Text(_allCities[index].name, style:
+            child:  Text(model.response.eventData.students[index].name, style:
             TextStyle(fontSize: 20.0)
             ),
           ),

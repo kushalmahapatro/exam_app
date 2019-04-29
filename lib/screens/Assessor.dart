@@ -175,7 +175,7 @@ class _AssessorState extends State<Assessor> implements AssessorPageListener , A
       Scaffold.of(_scaffoldContext).showSnackBar( SnackBar(
           content:  Text(model.responseMessage)
       ));
-      Navigator.push(context, new MaterialPageRoute(builder: (c)=> new VivaAndTheoryManagement()));
+      Navigator.push(context, new MaterialPageRoute(builder: (c)=> new VivaAndTheoryManagement(model:model)));
     }else{
       Scaffold.of(_scaffoldContext).showSnackBar( SnackBar(
           content:  Text(model.responseMessage)
