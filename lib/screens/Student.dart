@@ -173,7 +173,7 @@ class _StudentState extends State<Student> implements AssessorPageListener , Ass
   }
 
   @override
-  void onLoginSuccess({GetAssessorLoginModel model}) {
+  void onLoginSuccess({AssessorLoginModel model}) {
     Navigator.push(context, new MaterialPageRoute(builder: (c)=> new TakeStudentPic()));
     Scaffold.of(_scaffoldContext).showSnackBar( SnackBar(
         content:  Text(model.responseMessage)

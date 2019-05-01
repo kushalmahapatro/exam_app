@@ -170,12 +170,12 @@ class _AssessorState extends State<Assessor> implements AssessorPageListener , A
   }
 
   @override
-  void onLoginSuccess({GetAssessorLoginModel model}) {
+  void onLoginSuccess({AssessorLoginModel model}) {
     if(model.responseCode==200){
       Scaffold.of(_scaffoldContext).showSnackBar( SnackBar(
           content:  Text(model.responseMessage)
       ));
-      Navigator.push(context, new MaterialPageRoute(builder: (c)=> new VivaAndTheoryManagement(model:model)));
+      Navigator.push(context, new MaterialPageRoute(builder: (c)=> new VivaAndTheoryManagement()));
     }else{
       Scaffold.of(_scaffoldContext).showSnackBar( SnackBar(
           content:  Text(model.responseMessage)

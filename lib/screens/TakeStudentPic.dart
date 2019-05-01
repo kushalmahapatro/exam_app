@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:exam_app/screens/VideoScreen.dart';
+import 'dart:io' as Io;
 //import 'package:simple_permissions/simple_permissions.dart';
 
 void main() {
@@ -53,8 +54,8 @@ class UserOptionsState extends State<UserOptions> {
       File _image;
       adhaarFile = await ImagePicker.pickImage(
         source: ImageSource.camera,
-        //maxHeight: 50.0,
-        //maxWidth: 50.0,
+        maxHeight: 200.0,
+        maxWidth: 200.0,
       );
       //requestPermission();
       dir = await getExternalStorageDirectory();
@@ -63,6 +64,8 @@ class UserOptionsState extends State<UserOptions> {
       print("directory=="+knockDir.toString());
       //final dir = await getExternalStorageDirectory();
       final String path = dir.path;
+     // Img.Image image = Img.decodeImage(adhaarFile.readAsBytesSync());
+     // Img.Image thumbnail = Img.copyResize(image, 120);
       final File finalImage = await adhaarFile.copy('${knockDir.path}/adhaar.png');
       print("path== " + path);
       print("You selected camera image : " + adhaarFile.path);
@@ -74,6 +77,8 @@ class UserOptionsState extends State<UserOptions> {
       File _image;
       profileFile = await ImagePicker.pickImage(
         source: ImageSource.camera,
+        maxHeight: 200.0,
+        maxWidth: 200.0,
       );
       final String path = dir.path;
       final File finalImage = await profileFile.copy('${knockDir.path}/profile.png');

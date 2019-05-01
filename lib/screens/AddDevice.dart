@@ -4,18 +4,16 @@ import 'package:exam_app/utils/ColorSwatch.dart';
 import 'package:exam_app/model/city.dart';
 
 class AddDevice extends StatefulWidget {
-  GetAssessorLoginModel model;
-  AddDevice({Key key, this.model }) : super(key: key);
+  AddDevice({Key key}) : super(key: key);
   @override
-  _AddDeviceState createState() => _AddDeviceState(model);
+  _AddDeviceState createState() => _AddDeviceState();
 }
 
 class _AddDeviceState extends State<AddDevice> {
   final List<City> _allCities = City.allCities();
   BuildContext _scaffoldContext;
-  GetAssessorLoginModel model;
+  List<Student> students = AssessorLoginModel.getInstance(Map()).eventData.students;
 
-  _AddDeviceState(this.model);
   @override
   Widget build(BuildContext context) {
     _scaffoldContext = context;
@@ -36,7 +34,7 @@ class _AddDeviceState extends State<AddDevice> {
 
   getHomePageBody(BuildContext context) {
     return ListView.builder(
-      itemCount: model.response.eventData.students.length,
+      itemCount: students.length,
       itemBuilder: _getItemUI,
       padding: EdgeInsets.all(0.0),
     );
@@ -50,7 +48,7 @@ class _AddDeviceState extends State<AddDevice> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(10.0),
-            child:  Text(model.response.eventData.students[index].name, style:
+            child:  Text(students[index].name, style:
             TextStyle(fontSize: 20.0)
             ),
           ),
