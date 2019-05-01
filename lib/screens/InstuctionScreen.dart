@@ -1,20 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:exam_app/sdk/api/GetAssessorLogin.dart';
+import 'package:exam_app/screens/QuestionScreen.dart';
+//import 'package:flutter_html_view/flutter_html_view.dart';
 
 class InstuctionScreen extends StatefulWidget {
+  GetAssessorLoginModel model;
+  InstuctionScreen({Key key,this.model}) : super(key: key);
   @override
-  _InstuctionScreenState createState() => _InstuctionScreenState();
+  _InstuctionScreenState createState() => _InstuctionScreenState(model);
 }
 
+
 class _InstuctionScreenState extends State<InstuctionScreen> {
+  GetAssessorLoginModel model;
+  _InstuctionScreenState(this.model);
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
         title: Text("Instuction Screen"),
       ),
-      body: Center(
-        child: Text("Come to Instcurion screen"),
-      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        //verticalDirection: VerticalDirection.down,
+        children: <Widget>[
+        /*  Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+             Padding(
+               padding: EdgeInsets.all(10.0),
+               child: new Text(model.response.eventData.instructionLanguage)
+             ),
+            ],
+          ),*/
+          Center(
+            child: RaisedButton(onPressed: (){
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (c) => new QuestionScreen()));
+            },
+            child: Text("Next"),
+            ),
+          )
+        ],
+      )
+
+      //Text(model.response.eventData.instructionLanguage),
     );
   }
 }
