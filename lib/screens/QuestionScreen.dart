@@ -34,7 +34,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 height: 50.0,
                 child: ListView.builder(
                   itemBuilder: _getHorizontlData,
-                  itemCount: GetAssessorLoginModel.response.eventData.students.length,
+                  itemCount: AssessorLoginModel.getInstance(Map()).eventData.students.length,
                   scrollDirection: Axis.horizontal,
                 ),
               ),
