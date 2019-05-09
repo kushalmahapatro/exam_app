@@ -2,6 +2,8 @@
 import 'package:exam_app/sdk/api/GetAssessor.dart';
 import 'package:exam_app/sdk/api/GetAssessorLogin.dart';
 import 'package:flutter/material.dart';
+import 'package:exam_app/model/AcessorLogin.dart';
+export 'package:exam_app/model/AcessorLogin.dart';
 
 class AssessorLoginController {
   final AssessorLoginListener listener;
@@ -9,7 +11,7 @@ class AssessorLoginController {
 
   void callAPI(String id, String password) async{
     try{
-      GetAssessorLoginModel getAssessorLogin = await getAssessorLoginAPI({"Client-Service":"frontend-client",
+      AssessorLoginModel getAssessorLogin = await getAssessorLoginAPI({"Client-Service":"frontend-client",
       "Auth-Key":"simplerestapi"}, { "user_id": id,
       "password": password,});
       listener.onLoginSuccess(model: getAssessorLogin);
@@ -23,5 +25,5 @@ class AssessorLoginController {
 
 abstract class AssessorLoginListener {
   void onLoginFailure ({ @required String message });
-  void onLoginSuccess ({@required GetAssessorLoginModel model});
+  void onLoginSuccess ({@required AssessorLoginModel model});
 }

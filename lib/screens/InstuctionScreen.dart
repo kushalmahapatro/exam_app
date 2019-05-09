@@ -4,16 +4,15 @@ import 'package:exam_app/screens/QuestionScreen.dart';
 //import 'package:flutter_html_view/flutter_html_view.dart';
 
 class InstuctionScreen extends StatefulWidget {
-  GetAssessorLoginModel model;
-  InstuctionScreen({Key key,this.model}) : super(key: key);
+  InstuctionScreen({Key key}) : super(key: key);
   @override
-  _InstuctionScreenState createState() => _InstuctionScreenState(model);
+  _InstuctionScreenState createState() => _InstuctionScreenState();
 }
 
 
 class _InstuctionScreenState extends State<InstuctionScreen> {
-  GetAssessorLoginModel model;
-  _InstuctionScreenState(this.model);
+
+  Map<String, String> instructions = AssessorLoginModel.getInstance(Map()).eventData.instructionLanguage;
 
   @override
   Widget build(BuildContext context) {
@@ -22,26 +21,11 @@ class _InstuctionScreenState extends State<InstuctionScreen> {
         title: Text("Instuction Screen"),
       ),
       body: Column(
+        mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
         //verticalDirection: VerticalDirection.down,
         children: <Widget>[
-        /*  Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-             Padding(
-               padding: EdgeInsets.all(10.0),
-               child: new Text(model.response.eventData.instructionLanguage)
-             ),
-            ],
-          ),*/
-          Center(
-            child: RaisedButton(onPressed: (){
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (c) => new QuestionScreen()));
-            },
-            child: Text("Next"),
-            ),
-          )
+          Text(instructions["hindi"]),
         ],
       )
 

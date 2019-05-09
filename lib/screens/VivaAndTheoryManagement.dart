@@ -6,20 +6,17 @@ import 'package:exam_app/screens/InstuctionScreen.dart';
 
 
 class VivaAndTheoryManagement extends StatefulWidget {
-  GetAssessorLoginModel model;
-  VivaAndTheoryManagement({Key key, this.model}) : super(key: key);
+  VivaAndTheoryManagement({Key key}) : super(key: key);
 
   @override
-  _VivaAndTheoryManagementState createState() => _VivaAndTheoryManagementState(model);
+  _VivaAndTheoryManagementState createState() => _VivaAndTheoryManagementState();
 }
 
 class _VivaAndTheoryManagementState extends State<VivaAndTheoryManagement> {
-  GetAssessorLoginModel model;
-  _VivaAndTheoryManagementState(this.model);
 
   @override
   Widget build(BuildContext context) {
-    print("valeue of the modle=="+GetAssessorLoginModel.responseMessage);
+//    print("valeue of the modle=="+model.responseMessage);
     return Scaffold(
       backgroundColor: primaryColor,
       body: new Container(
@@ -43,7 +40,7 @@ class _VivaAndTheoryManagementState extends State<VivaAndTheoryManagement> {
               child: RaisedButton(
                 onPressed: (){
                   Navigator.push(context,
-                      new MaterialPageRoute(builder: (c) => new AddDevice(model:model)));
+                      new MaterialPageRoute(builder: (c) => new AddDevice()));
                 },
                 child: Text("Student",
                   style: TextStyle(

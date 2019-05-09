@@ -33,7 +33,7 @@ dependencies:
   path_provider :
   camera:
   fluttertoast:
-  video_player:
+#  video_player:
   image:
   grouped_buttons:
  # flutter_html_view: ^0.5.11
