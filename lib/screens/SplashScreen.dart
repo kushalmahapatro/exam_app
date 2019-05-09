@@ -5,6 +5,7 @@ import 'package:exam_app/sdk/api/GetSettings.dart';
 import 'package:exam_app/utils/ColorSwatch.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
+import 'package:exam_app/screens/VivaTestScreen.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key key}) : super(key: key);

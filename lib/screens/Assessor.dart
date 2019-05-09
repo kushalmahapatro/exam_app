@@ -133,7 +133,11 @@ class _AssessorState extends State<Assessor> implements AssessorPageListener , A
               padding: EdgeInsets.all(10.0),
               child: apiCalled ? inputField() : Container()),
           Padding(padding: EdgeInsets.all(10.0),
-              child: apiCalled? RaisedButton(onPressed: (){
+              child: apiCalled? MaterialButton(
+                height: 50,
+                minWidth: 100,
+                color:Colors.white ,
+                onPressed: (){
                 loginController.callAPI(id[_id].id, pin);
               },child: Text("Login"),) : Container())
         ],
@@ -171,14 +175,14 @@ class _AssessorState extends State<Assessor> implements AssessorPageListener , A
 
   @override
   void onLoginSuccess({GetAssessorLoginModel model}) {
-    if(model.responseCode==200){
+    if(GetAssessorLoginModel.responseCode==200){
       Scaffold.of(_scaffoldContext).showSnackBar( SnackBar(
-          content:  Text(model.responseMessage)
+          content:  Text(GetAssessorLoginModel.responseMessage)
       ));
       Navigator.push(context, new MaterialPageRoute(builder: (c)=> new VivaAndTheoryManagement(model:model)));
     }else{
       Scaffold.of(_scaffoldContext).showSnackBar( SnackBar(
-          content:  Text(model.responseMessage)
+          content:  Text(GetAssessorLoginModel.responseMessage)
       ));
     }
 

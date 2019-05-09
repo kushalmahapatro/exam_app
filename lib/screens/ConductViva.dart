@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:exam_app/utils/ColorSwatch.dart';
 import 'package:exam_app/model/city.dart';
 
-class AddDevice extends StatefulWidget {
+class ConductViva extends StatefulWidget {
   GetAssessorLoginModel model;
-  AddDevice({Key key, this.model }) : super(key: key);
+  ConductViva({Key key, this.model }) : super(key: key);
   @override
-  _AddDeviceState createState() => _AddDeviceState(model);
+  _ConductVivaState createState() => _ConductVivaState(model);
 }
 
-class _AddDeviceState extends State<AddDevice> {
+class _ConductVivaState extends State<ConductViva> {
   BuildContext _scaffoldContext;
   GetAssessorLoginModel model;
 
-  _AddDeviceState(this.model);
+  _ConductVivaState(this.model);
   @override
   Widget build(BuildContext context) {
     _scaffoldContext = context;
@@ -62,7 +62,7 @@ class _AddDeviceState extends State<AddDevice> {
             padding: EdgeInsets.all(10.0),
             child: RaisedButton(
               onPressed: null,
-              child: Text("Add",
+              child: Text("Conduct",
                   style: TextStyle(
                       color: Colors.black
                   )

@@ -29,7 +29,10 @@ class _LoginState extends State<Login> {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.all(10.0),
-              child: RaisedButton(
+              child: MaterialButton(
+                minWidth: 100,
+                height: 50,
+                color: Colors.white,
                 onPressed: () {
                   Navigator.push(context,
                       new MaterialPageRoute(builder: (c) => new Assessor()));
@@ -39,7 +42,10 @@ class _LoginState extends State<Login> {
             ),
             Padding(
               padding: EdgeInsets.all(10.0),
-              child: RaisedButton(
+              child: MaterialButton(
+                minWidth: 100,
+                height: 50,
+                color: Colors.white,
                 onPressed: () {
                   Navigator.push(context,
                       new MaterialPageRoute(builder: (c) => new Student()));

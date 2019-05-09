@@ -19,7 +19,7 @@ class _VivaAndTheoryManagementState extends State<VivaAndTheoryManagement> {
 
   @override
   Widget build(BuildContext context) {
-    print("valeue of the modle=="+model.responseMessage);
+    print("valeue of the modle=="+GetAssessorLoginModel.responseMessage);
     return Scaffold(
       backgroundColor: primaryColor,
       body: new Container(
