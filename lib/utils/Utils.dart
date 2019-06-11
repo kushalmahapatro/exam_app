@@ -3,6 +3,7 @@ import 'package:exam_app/utils/ColorSwatch.dart';
 export 'PreferenceManager.dart';
 
 class Utils {
+
   static void snackBar(String message, BuildContext _scaffoldContext) {
     Scaffold.of(_scaffoldContext)
         .showSnackBar(new SnackBar(content: new Text(message)));
@@ -64,5 +65,7 @@ class Utils {
 
     return regExp.hasMatch(email2);
   }
+
+
 
 }

@@ -4,9 +4,11 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-//import 'package:video_player/video_player.dart';
+import 'package:video_player/video_player.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:exam_app/screens/InstuctionScreen.dart';
+import 'package:exam_app/model/LocalStorageData.dart';
+import 'package:exam_app/sdk/api/GetAssessorLogin.dart';
 
 class VideoScreen extends StatefulWidget {
   @override
@@ -18,6 +20,8 @@ class VideoScreen extends StatefulWidget {
 class _VideoScreenState extends State<VideoScreen> {
   CameraController controller;
   String videoPath;
+  String student_code;
+  int stdposition;
 
   List<CameraDescription> cameras;
   int selectedCameraIdx;
@@ -271,6 +275,8 @@ class _VideoScreenState extends State<VideoScreen> {
   }
 
   Future<String> _startVideoRecording() async {
+    stdposition=LocalStorageData.std_position;
+    student_code=GetAssessorLoginModel.response.eventData.students[stdposition].studentCode;
     if (!controller.value.isInitialized) {
       Fluttertoast.showToast(
           msg: 'Please wait',
@@ -293,7 +299,7 @@ class _VideoScreenState extends State<VideoScreen> {
     final String videoDirectory = '${appDirectory.path}/Videos';
     await Directory(videoDirectory).create(recursive: true);
     final String currentTime = DateTime.now().millisecondsSinceEpoch.toString();
-    final String filePath = '${dir.path}/Assesmentportal/${currentTime}.mp4';
+    final String filePath = '${dir.path}/Assesmentportal/'+student_code+'/theoryvideo.mp4';
 
     try {
       await controller.startVideoRecording(filePath);

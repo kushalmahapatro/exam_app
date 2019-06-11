@@ -1,7 +1,6 @@
 
 
-const String BASE_URL = "http://www.assessmentportal.tk/rest";
-
+const String BASE_URL = "http://assessmentportal.ml/rest";
 // true to have background image and false for not
 const bool IMAGE_BACKGROUND = true;
 

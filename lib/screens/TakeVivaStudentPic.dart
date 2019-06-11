@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:exam_app/screens/VideoScreen.dart';
+import 'package:exam_app/screens/VivaVideoScreen.dart';
+import 'package:exam_app/sdk/api/GetAssessorLogin.dart';
+import 'package:exam_app/model/LocalStorageData.dart';
 import 'dart:io' as Io;
 //import 'package:simple_permissions/simple_permissions.dart';
 
@@ -30,6 +32,8 @@ class UserOptions extends StatefulWidget {
 class UserOptionsState extends State<UserOptions> {
   var knockDir;
   var dir;
+  String student_code;
+  int stdposition;
 //save the result of gallery file
   File profileFile;
 
@@ -51,16 +55,18 @@ class UserOptionsState extends State<UserOptions> {
 
     //display image selected from camera
     imageSelectorAdhaar() async {
+      stdposition=LocalStorageData.std_position;
       File _image;
       adhaarFile = await ImagePicker.pickImage(
         source: ImageSource.camera,
         maxHeight: 200.0,
         maxWidth: 200.0,
       );
+      student_code=GetAssessorLoginModel.response.eventData.students[stdposition].studentCode;
       //requestPermission();
       dir = await getExternalStorageDirectory();
       knockDir =
-      await new Directory('${dir.path}/Assesmentportal').create(recursive: true);
+      await new Directory('${dir.path}/Assesmentportal/'+student_code+'').create(recursive: true);
       print("directory=="+knockDir.toString());
       //final dir = await getExternalStorageDirectory();
       final String path = dir.path;
@@ -91,12 +97,7 @@ class UserOptionsState extends State<UserOptions> {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Student Picture',
-          style: new TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87),
-        ),
+        title: new Text('Student Picture',),
       ),
       body: new Builder(
         builder: (BuildContext context) {
@@ -108,8 +109,11 @@ class UserOptionsState extends State<UserOptions> {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.all(20),
-                        child: new RaisedButton(
-                          child: new Text('Adhaar Pic'),
+                        child: new MaterialButton(
+                          minWidth: 100,
+                          height: 50,
+                          color: Colors.blue,
+                          child: new Text('Adhaar Pic',style: TextStyle(color: Colors.white,fontSize: 20.0),),
                           onPressed: imageSelectorAdhaar,
                         ),
                       ),
@@ -117,8 +121,11 @@ class UserOptionsState extends State<UserOptions> {
                       Spacer(flex: 10,),
                       Padding(
                         padding: EdgeInsets.all(20),
-                        child: new RaisedButton(
-                          child: new Text('Profile Pic'),
+                        child: new MaterialButton(
+                          minWidth: 100,
+                          height: 50,
+                          color: Colors.blue,
+                          child: new Text('Profile Pic',style: TextStyle(fontSize: 20.0,color: Colors.white),),
                           onPressed: imageSelectorProfile,
                         ),
                       ),
@@ -143,10 +150,13 @@ class UserOptionsState extends State<UserOptions> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.all(20),
-                      child: new RaisedButton(
-                        child: new Text('Next'),
+                      child: new MaterialButton(
+                        minWidth: 150,
+                        height: 50,
+                        color: Colors.blue,
+                        child: new Text('Next',style: TextStyle(color: Colors.white,fontSize: 20.0),),
                         onPressed: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (c)=>VideoScreen()));
+                          Navigator.push(context,MaterialPageRoute(builder: (c)=>VivaVideoScreen()));
                         },
                       ),
                     ),

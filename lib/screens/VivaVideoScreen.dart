@@ -4,8 +4,12 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:video_player/video_player.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:exam_app/screens/InstuctionScreen.dart';
+import 'package:exam_app/screens/VivaTestScreen.dart';
+import 'package:exam_app/model/LocalStorageData.dart';
+import 'package:exam_app/sdk/api/GetAssessorLogin.dart';
+
 
 class VivaVideoScreen extends StatefulWidget {
   @override
@@ -17,7 +21,8 @@ class VivaVideoScreen extends StatefulWidget {
 class _VivaVideoScreenState extends State<VivaVideoScreen> {
   CameraController controller;
   String videoPath;
-
+  String student_code;
+  int stdposition;
   List<CameraDescription> cameras;
   int selectedCameraIdx;
 
@@ -265,11 +270,13 @@ class _VivaVideoScreenState extends State<VivaVideoScreen> {
           backgroundColor: Colors.grey,
           textColor: Colors.white
       );
-      Navigator.push(context, new MaterialPageRoute(builder: (c)=> new InstuctionScreen()));
+      Navigator.push(context, new MaterialPageRoute(builder: (c)=> new VivaTestScreen()));
     });
   }
 
   Future<String> _startVideoRecording() async {
+    stdposition=LocalStorageData.std_position;
+    student_code=GetAssessorLoginModel.response.eventData.students[stdposition].studentCode;
     if (!controller.value.isInitialized) {
       Fluttertoast.showToast(
           msg: 'Please wait',
@@ -292,7 +299,7 @@ class _VivaVideoScreenState extends State<VivaVideoScreen> {
     final String videoDirectory = '${appDirectory.path}/Videos';
     await Directory(videoDirectory).create(recursive: true);
     final String currentTime = DateTime.now().millisecondsSinceEpoch.toString();
-    final String filePath = '${dir.path}/Assesmentportal/${currentTime}.mp4';
+    final String filePath = '${dir.path}/Assesmentportal/'+student_code+'/vivaVideo.mp4';
 
     try {
       await controller.startVideoRecording(filePath);

@@ -51,7 +51,7 @@ class _AssessorState extends State<Assessor> implements AssessorPageListener , A
                     side: BorderSide(
                         width: 1.0,
                         style: BorderStyle.solid,
-                        color: Colors.black),
+                        color: Colors.blue),
                     borderRadius: BorderRadius.all(Radius.circular(2.0)),
                   ),
                 ),
@@ -66,7 +66,7 @@ class _AssessorState extends State<Assessor> implements AssessorPageListener , A
                            Center(
                           child: Text(
                         value.name,
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.black,fontSize: 15.0),
                       )),
                     );
                   }).toList(),
@@ -94,7 +94,7 @@ class _AssessorState extends State<Assessor> implements AssessorPageListener , A
                     side: BorderSide(
                         width: 1.0,
                         style: BorderStyle.solid,
-                        color: Colors.black),
+                        color: Colors.blue),
                     borderRadius: BorderRadius.all(Radius.circular(2.0)),
                   ),
                 ),
@@ -123,7 +123,7 @@ class _AssessorState extends State<Assessor> implements AssessorPageListener , A
         children: <Widget>[
           Padding(
               padding: EdgeInsets.all(10.0), child: Text("Assessor Login", style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontWeight: FontWeight.w500,
               fontSize: 30.0),)),
           Padding(
@@ -136,15 +136,18 @@ class _AssessorState extends State<Assessor> implements AssessorPageListener , A
               child: apiCalled? MaterialButton(
                 height: 50,
                 minWidth: 100,
-                color:Colors.white ,
+                color:Colors.blue ,
                 onPressed: (){
                 loginController.callAPI(id[_id].id, pin);
-              },child: Text("Login"),) : Container())
+              },child: Text("Login",style: TextStyle(fontSize: 20.0,color: Colors.white),),) : Container())
         ],
       ),
     );
     scaffold = new Scaffold(
-      backgroundColor: primaryColor,
+      appBar: AppBar(
+        title: Text("Assesor Login"),
+      ),
+      backgroundColor: Colors.white,
       body: Builder(builder: (BuildContext _context) {
         _scaffoldContext = _context;
         return body;
@@ -174,15 +177,15 @@ class _AssessorState extends State<Assessor> implements AssessorPageListener , A
   }
 
   @override
-  void onLoginSuccess({AssessorLoginModel model}) {
-    if(model.responseCode==200){
+  void onLoginSuccess({GetAssessorLoginModel model}) {
+    if(GetAssessorLoginModel.responseCode==200){
       Scaffold.of(_scaffoldContext).showSnackBar( SnackBar(
-          content:  Text(model.responseMessage)
+          content:  Text(GetAssessorLoginModel.responseMessage)
       ));
       Navigator.push(context, new MaterialPageRoute(builder: (c)=> new VivaAndTheoryManagement()));
     }else{
       Scaffold.of(_scaffoldContext).showSnackBar( SnackBar(
-          content:  Text(model.responseMessage)
+          content:  Text(GetAssessorLoginModel.responseMessage)
       ));
     }
 

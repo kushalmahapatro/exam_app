@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
+import 'package:exam_app/sdk/api/GetAssessorLogin.dart';
+import 'package:exam_app/model/LocalStorageData.dart';
+import 'package:exam_app/model/VivaQuestionjson.dart';
+import 'package:exam_app/model/VivaStepjson.dart';
 
 class VivaTestScreen extends StatefulWidget {
   @override
@@ -7,8 +11,73 @@ class VivaTestScreen extends StatefulWidget {
 }
 
 class _VivaTestScreenState extends State<VivaTestScreen> {
+  int mainindex;
+  int stdposition;
+  //List<Vivastepjson> stepjson=new List();
+  List mainquestionjson=new List();
+  List finalmainquestionjson=new List();
+  @override
+  initState(){
+    super.initState();
+    stdposition=LocalStorageData.std_position;
+    mainindex=0;
+  }
+
+  Widget _questionoptionui(BuildContext context,index){
+    Vivastepjson stepjson=new Vivastepjson("", 0.0);
+    print("instuction"+GetAssessorLoginModel.response.eventData.instructionLanguage.toString());
+    if (finalmainquestionjson.length>0){
+     // mainquestionjson.add(finalmainquestionjson[mainindex]);
+    }
+
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding:EdgeInsets.all(5),
+          child: Text(GetAssessorLoginModel.response.eventData.students[stdposition].vivaQuestions[mainindex].steps[index].step),
+        ),
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            RadioButtonGroup(
+              labels: <String>[
+                "No Answer"+mainindex.toString(),
+                "Poor"+mainindex.toString(),
+                "Good"+mainindex.toString(),
+                "Very Good"+mainindex.toString(),
+                "   Excellent"+mainindex.toString(),
+              ],
+              orientation: GroupedButtonsOrientation.HORIZONTAL,
+              padding: EdgeInsets.all(10),
+              onSelected: (String selected) => setState((){
+                stepjson.qstn_answer=selected;
+                stepjson.obtained_marks=0.0;
+                mainquestionjson.add(stepjson);
+                print(stepjson.toString());
+                print(selected);
+              }),
+              picked: stepjson.qstn_answer//,
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+   /* for(int i=0;i<GetAssessorLoginModel.response.eventData.students[stdposition].vivaQuestions.length;i++){
+      stepjson=new List();
+      for(int j=0;j<GetAssessorLoginModel.response.eventData.students[stdposition].vivaQuestions[i].steps.length;j++){
+        stepjson.add(Vivastepjson(j.toString(), 0.0));
+        mainquestionjson[i]=stepjson;
+      }
+      //mainquestionjson.add(stepjson);
+    }*/
+   // print("main json=="+mainquestionjson.toString());
     return Scaffold(
       appBar: AppBar(
         title: Text("VivaTestScreen"),
@@ -18,7 +87,7 @@ class _VivaTestScreenState extends State<VivaTestScreen> {
         children: <Widget>[
           Align(
             alignment: Alignment.center,
-            child: Text("1608790990",
+            child: Text(GetAssessorLoginModel.response.eventData.students[stdposition].studentCode.toString(),
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
@@ -28,7 +97,7 @@ class _VivaTestScreenState extends State<VivaTestScreen> {
 
           Align(
             alignment: Alignment.center,
-            child: Text("Bishal Kumar Seth",style: TextStyle(
+            child: Text(GetAssessorLoginModel.response.eventData.students[stdposition].name,style: TextStyle(
               fontSize:25,
                 fontWeight:FontWeight.bold,
 
@@ -40,7 +109,7 @@ class _VivaTestScreenState extends State<VivaTestScreen> {
             padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text("Q1",style: TextStyle(
+              child: Text("Q"+mainindex.toString(),style: TextStyle(
                 fontSize:25,
                 fontWeight:FontWeight.bold,
 
@@ -50,8 +119,7 @@ class _VivaTestScreenState extends State<VivaTestScreen> {
           ),
           Padding(
             padding:EdgeInsets.all(20),
-            child: Text("Practically you have been assign a task to guard a pemises.Demostrate the knowledge of steps that "
-                "should be performed for illegal requiremnets to be connfirmed while undertaking security task."),
+            child: Text(GetAssessorLoginModel.response.eventData.students[stdposition].vivaQuestions[mainindex].question),
           ),
 
 
@@ -61,7 +129,7 @@ class _VivaTestScreenState extends State<VivaTestScreen> {
               color: Colors.white,
               child: ListView.builder(
                 itemBuilder: _questionoptionui,
-                itemCount: 16,
+                itemCount: GetAssessorLoginModel.response.eventData.students[stdposition].vivaQuestions[mainindex].steps.length,
                 padding: EdgeInsets.all(5),
               )
           ),
@@ -71,7 +139,16 @@ class _VivaTestScreenState extends State<VivaTestScreen> {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.all(10),
-                child: MaterialButton(onPressed: null,
+                child: MaterialButton(
+                  onPressed: (){
+                setState(() {
+                  if(mainindex!=0)
+                  mainindex=mainindex-1;
+                });
+                finalmainquestionjson.add(mainquestionjson);
+                mainquestionjson=new List();
+                print("final mainjson=="+finalmainquestionjson.toString());
+                },
                   minWidth: 100,
                   height: 50,
                   color: Colors.blue,
@@ -80,7 +157,16 @@ class _VivaTestScreenState extends State<VivaTestScreen> {
               ),
               Container(
                 padding: EdgeInsets.all(10),
-                child: MaterialButton(onPressed: null,
+                child: MaterialButton(
+                  onPressed: (){
+                    setState(() {
+                      if(mainindex<GetAssessorLoginModel.response.eventData.students[stdposition].vivaQuestions.length-1)
+                      mainindex=mainindex+1;
+                    });
+                   finalmainquestionjson.add(mainquestionjson);
+                    mainquestionjson=new List();
+                    print("final mainjson=="+finalmainquestionjson.toString());
+                  },
                   minWidth: 100,
                   height: 50,
                   color: Colors.blue,
@@ -95,36 +181,5 @@ class _VivaTestScreenState extends State<VivaTestScreen> {
     );
   }
 
-  Widget _questionoptionui(BuildContext context,index){
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding:EdgeInsets.all(5),
-          child: Text("CAndidate knows the legalprovision applicable for the given task and asks the appropriate"
-              " question to understand the job role in case of any doubts"),
-        ),
-
-       Row(
-         mainAxisAlignment: MainAxisAlignment.spaceAround,
-         children: <Widget>[
-           RadioButtonGroup(
-             labels: <String>[
-               "No Answer",
-               "Poor",
-               "Good",
-               "Very Good",
-               "   Excellent",
-             ],
-             orientation: GroupedButtonsOrientation.HORIZONTAL,
-             padding: EdgeInsets.all(10),
-
-             onSelected: (String selected) => print(selected),
-           ),
-         ],
-       )
-      ],
-    );
-  }
 }
 

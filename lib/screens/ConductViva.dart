@@ -2,16 +2,20 @@ import 'package:exam_app/sdk/api/GetAssessorLogin.dart';
 import 'package:flutter/material.dart';
 import 'package:exam_app/utils/ColorSwatch.dart';
 import 'package:exam_app/model/city.dart';
+import 'package:exam_app/screens/TakeVivaStudentPic.dart';
 
 class ConductViva extends StatefulWidget {
-
-  ConductViva({Key key}) : super(key: key);
+  GetAssessorLoginModel model;
+  ConductViva({Key key, this.model }) : super(key: key);
   @override
-  _ConductVivaState createState() => _ConductVivaState();
+  _ConductVivaState createState() => _ConductVivaState(model);
 }
 
 class _ConductVivaState extends State<ConductViva> {
   BuildContext _scaffoldContext;
+  GetAssessorLoginModel model;
+
+  _ConductVivaState(this.model);
   @override
   Widget build(BuildContext context) {
     _scaffoldContext = context;
@@ -34,7 +38,7 @@ class _ConductVivaState extends State<ConductViva> {
     return Container(
       height: 700,
       child:  ListView.builder(
-        itemCount: AssessorLoginModel.getInstance(Map()).eventData.students.length,
+        itemCount: GetAssessorLoginModel.response.eventData.students.length,
         itemBuilder: _getItemUI,
         padding: EdgeInsets.all(0.0),
       ),
@@ -49,7 +53,7 @@ class _ConductVivaState extends State<ConductViva> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(10.0),
-            child:  Text(AssessorLoginModel.getInstance(Map()).eventData.students[index].name, style:
+            child:  Text(GetAssessorLoginModel.response.eventData.students[index].name, style:
             TextStyle(fontSize: 20.0)
             ),
           ),
@@ -58,7 +62,9 @@ class _ConductVivaState extends State<ConductViva> {
           Padding(
             padding: EdgeInsets.all(10.0),
             child: RaisedButton(
-              onPressed: null,
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(builder: (c)=>TakeVivaStudentPic()));
+              },
               child: Text("Conduct",
                   style: TextStyle(
                       color: Colors.black

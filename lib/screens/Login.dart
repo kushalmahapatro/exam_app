@@ -20,7 +20,12 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      backgroundColor: primaryColor,
+      appBar: AppBar(
+        title: Center(
+          child: Text("Login Page"),
+        ),
+      ),
+      backgroundColor: Colors.white,
       body: new Container(
         alignment: Alignment.center,
         child: Column(
@@ -30,27 +35,37 @@ class _LoginState extends State<Login> {
             Padding(
               padding: EdgeInsets.all(10.0),
               child: MaterialButton(
-                minWidth: 100,
+                minWidth: 150,
                 height: 50,
-                color: Colors.white,
+                color: Colors.blue,
                 onPressed: () {
                   Navigator.push(context,
                       new MaterialPageRoute(builder: (c) => new Assessor()));
                 },
-                child: Text("Assessor Login"),
+                child: Text("Assessor Login",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize:20.0
+                  ),
+                ),
               ),
             ),
             Padding(
               padding: EdgeInsets.all(10.0),
               child: MaterialButton(
-                minWidth: 100,
+                minWidth: 150,
                 height: 50,
-                color: Colors.white,
+                color: Colors.blue,
                 onPressed: () {
                   Navigator.push(context,
                       new MaterialPageRoute(builder: (c) => new Student()));
                 },
-                child: Text("Student Login"),
+                child: Text("Student Login",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize:20.0
+                  ),
+                ),
               ),
             )
           ],

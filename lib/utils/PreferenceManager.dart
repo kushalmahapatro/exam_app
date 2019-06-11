@@ -14,6 +14,16 @@ class PreferenceManager {
     SharedPreferences prefs = await _prefs;
     return prefs.getString("country") ?? "";
   }
+  Future<bool> setStdPostionPrefs(String Studentposition) async {
+    SharedPreferences prefs = await _prefs;
+    bool result = await prefs.setString("stdposition", Studentposition ?? "");
+    return result;
+  }
+
+  Future<String> getStdPositionPrefs() async {
+    SharedPreferences prefs = await _prefs;
+    return prefs.getString("stdposition") ?? "";
+  }
 
   Future<bool>setuserLoggedIn(bool login) async {
     SharedPreferences prefs = await _prefs;
