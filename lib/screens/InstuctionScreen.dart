@@ -213,7 +213,7 @@ class _InstuctionScreenState extends State<InstuctionScreen> {
         children: <Widget>[
           Container(
             padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
-            height: 580,
+            height: 420,
             child: Center(
               child: MarkdownBody(
                 styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(p: Theme.of(context).textTheme.body1.copyWith(fontSize: 20.0)),

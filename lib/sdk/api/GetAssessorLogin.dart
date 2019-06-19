@@ -515,7 +515,7 @@ class VivaQuestions {
   String ownerId;
   String assignedId;
   List<Steps> steps;
-  Map<String, SingleLanguageQuestion> _languageQuestions;
+  Map<String, String> _languageQuestion;
 
   VivaQuestions(
       {this.id,
@@ -588,23 +588,22 @@ class VivaQuestions {
     return data;
   }
 
-
-  Map<String, SingleLanguageQuestion> getLanguageQuestion() {
-    if(_languageQuestions==null || _languageQuestions.length<1) {
-      Map<String, SingleLanguageQuestion> result = Map();
-//      result["English"] = SingleLanguageQuestion(question: "");
+  Map<String, String> getLanguageQuestion() {
+    if(_languageQuestion==null || _languageQuestion.length<1) {
+      Map<String, String> result = Map();
+      result["English"] = question ?? "";
       List<dynamic> list = jsonDecode(language) as List<dynamic>;
       for(int i=0; i<list.length; i++) {
-        Map<String, dynamic> item = (list[i] as Map<String, dynamic>) ?? {"": Map()};
-        item.forEach((k, v) {
-          if(k!=null && k.trim().length>0 && v!=null) {
-            result[k] = SingleLanguageQuestion.fromJson(v as Map<String, dynamic>);
-          }
-        });
+//        Map<String, String> item = (list[i] as Map<String, String>) ?? {"": ""};
+//        item.forEach((k, v) {
+//          if(k!=null && k.trim().length>0 && v!=null) {
+//            result[k] = v;
+//          }
+//        });
       }
-      _languageQuestions = result;
+      _languageQuestion = result;
     }
-    return _languageQuestions;
+    return _languageQuestion;
   }
 
 }
@@ -660,11 +659,53 @@ class SingleLanguageQuestion {
   }
 }
 
+class SingleLanguageStepQuestion {
+  String question;
+  final String option1 = "No Answer";
+  final String option2 = "Poor";
+  final String option3 = "Good";
+  final String option4 = "Very Good";
+  final String option5 = "Excellent";
+  String selectedOption;
+
+
+  SingleLanguageStepQuestion({this.question = ""});
+
+  SingleLanguageStepQuestion.fromJson(Map<String, dynamic> json) {
+  /*{
+      "step": "???????? 1 ???? ??"
+  }*/
+    question = json['step'] ?? "";
+  }
+
+  int getSelectedOptionIndex() {
+    if(selectedOption!=null) {
+      if(option1 == selectedOption) {
+        return 0;
+      }
+      else if(option2 == selectedOption) {
+        return 1;
+      }
+      else if(option3 == selectedOption) {
+        return 2;
+      }
+      else if(option4 == selectedOption) {
+        return 3;
+      }
+      else if(option5 == selectedOption) {
+        return 4;
+      }
+    }
+    return -1;
+  }
+}
+
 class Steps {
   String id;
   String vivaQuestionId;
   String step;
   String language;
+  Map<String, SingleLanguageStepQuestion> _languageStepQuestions;
 
   Steps({this.id, this.vivaQuestionId, this.step, this.language});
 
@@ -682,6 +723,25 @@ class Steps {
     data['step'] = this.step;
     data['language'] = this.language;
     return data;
+  }
+
+
+  Map<String, SingleLanguageStepQuestion> getLanguageStepQuestion() {
+    if(_languageStepQuestions==null || _languageStepQuestions.length<1) {
+      Map<String, SingleLanguageStepQuestion> result = Map();
+      result["English"] = SingleLanguageStepQuestion(question: step ?? "");
+      List<dynamic> list = jsonDecode(language) as List<dynamic>;
+      for(int i=0; i<list.length; i++) {
+        Map<String, dynamic> item = (list[i] as Map<String, dynamic>) ?? {"": Map()};
+        item.forEach((k, v) {
+          if(k!=null && k.trim().length>0 && v!=null) {
+            result[k] = SingleLanguageStepQuestion.fromJson(v as Map<String, dynamic>);
+          }
+        });
+      }
+      _languageStepQuestions = result;
+    }
+    return _languageStepQuestions;
   }
 
   @override
