@@ -17,6 +17,8 @@ class QuestionScreen extends StatefulWidget {
 class _QuestionScreenState extends State<QuestionScreen> {
   int mainIndex;
   var question_color_box;
+  double height;
+  double actual_height;
   bool mark_review,radio_select,both_markreview_radioselect,nothing_select;
   List<Color> select_color;
   List<QuestionJson> question_json;
@@ -172,6 +174,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    height = MediaQuery.of(context).size.height;
+    double percentage_height=0.33*height;
+    actual_height=height-percentage_height;
     final title = 'Qusetion Screen';
 
     _init();
@@ -249,10 +254,14 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
                 ],
               ),
-
-              Container(
-                child: QuestionWidget(mainIndex),
+              SingleChildScrollView(
+                child: Container(
+                    child: QuestionWidget(mainIndex)
+                ),
               ),
+              /*Container(
+                child: QuestionWidget(mainIndex),
+              ),*/
               /*@bishal
               *Next and previous button
                */

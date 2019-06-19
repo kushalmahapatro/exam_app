@@ -118,7 +118,7 @@ class _AddDeviceState extends State<AddDevice> implements AddDeviceListener,Remo
 
   getHomePageBody(BuildContext context) {
     height = MediaQuery.of(context).size.height;
-    double percentage_height=0.30*height;
+    double percentage_height=0.33*height;
     actual_height=height-percentage_height;
     return Container(
       height: actual_height,

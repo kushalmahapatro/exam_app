@@ -17,6 +17,8 @@ class InstuctionScreen extends StatefulWidget {
 
 class _InstuctionScreenState extends State<InstuctionScreen> {
   GetAssessorLoginModel model;
+  double height;
+  double actual_height;
   _InstuctionScreenState(this.model);
   static String html='';
   List<CustomPopupMenu> choices = <CustomPopupMenu>[
@@ -42,6 +44,9 @@ class _InstuctionScreenState extends State<InstuctionScreen> {
   @override
   Widget build(BuildContext context) {
     String markdown;
+    height = MediaQuery.of(context).size.height;
+    double percentage_height=0.33*height;
+    actual_height=height-percentage_height;
     if(LocalStorageData.selected_lang=="English"){
       markdown = html2md.convert(GetAssessorLoginModel.response.eventData.instruction);
     }else{
@@ -213,7 +218,7 @@ class _InstuctionScreenState extends State<InstuctionScreen> {
         children: <Widget>[
           Container(
             padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
-            height: 580,
+            height: actual_height,
             child: Center(
               child: MarkdownBody(
                 styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(p: Theme.of(context).textTheme.body1.copyWith(fontSize: 20.0)),
