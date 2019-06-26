@@ -316,13 +316,13 @@ class _StudentState extends State<Student> implements AssessorPageListener , Ass
       }
     }*/
 
-    dir = await getExternalStorageDirectory();
-    knockDir = await new Directory('${dir.path}/ExamApp/').create(recursive: true);
-    print("path== "+dir.path);
-
-    _write(student_response.toString());
-    String jsonread=_read() as String;
-    print("json read=="+jsonread.toString());
+//    dir = await getExternalStorageDirectory();
+//    knockDir = await new Directory('${dir.path}/ExamApp/').create(recursive: true);
+//    print("path== "+dir.path);
+//
+//    _write(student_response.toString());
+//    String jsonread=_read() as String;
+//    print("json read=="+jsonread.toString());
    int selected_position;
     for(int i=0;i<GetAssessorLoginModel.response.eventData.students.length;i++){
       if(GetAssessorLoginModel.response.eventData.students[i].name==name){

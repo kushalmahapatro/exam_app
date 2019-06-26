@@ -51,6 +51,7 @@ Future<GetAssessorLoginModel> getAssessorLoginAPI(
 }*/
 
 class GetAssessorLoginModel {
+  static GetAssessorLoginModel _instance;
   static int responseCode;
   static bool responseStatus;
   static String responseMessage;
@@ -67,9 +68,7 @@ class GetAssessorLoginModel {
     responseCode = json['ResponseCode']?? 0;
     responseStatus = json['ResponseStatus']?? false;
     responseMessage = json['ResponseMessage'] ?? "";
-    response = json['Response'] != null
-        ? new Response.fromJson(json['Response'])
-        : null;
+    response = Response.fromJson(json['Response'] ?? Map<String, dynamic>());
   }
 
   Map<String, dynamic> toJson() {
@@ -80,8 +79,21 @@ class GetAssessorLoginModel {
     if (response != null) {
       data['Response'] = response.toJson();
     }
+    print("op: "+data.toString());
     return data;
   }
+
+  static GetAssessorLoginModel getInstance(String jsonValue) {
+    if(_instance==null) {
+      _instance = GetAssessorLoginModel.fromJson(jsonValue);
+    }
+    return _instance;
+  }
+
+  clear() {
+    _instance = null;
+  }
+
   @override
   String toString() {
     // TODO: implement toString
@@ -99,9 +111,7 @@ class Response {
   Response.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'] ?? "";
     token = json['token'] ?? "";
-    eventData =json['event_data'] != null
-        ? new EventData.fromJson(json['event_data'])
-        : null;
+    eventData =EventData.fromJson(json['event_data']?? Map<String, dynamic>());
   }
 
   Map<String, dynamic> toJson() {
@@ -237,6 +247,9 @@ class EventData {
     data['instruction_language'] = this.instructionLanguage;
     if (this.students != null) {
       data['students'] = this.students.map((v) => v.toJson()).toList();
+    }
+    else{
+      data['students'] = List<Students>();
     }
     data['question_set_info'] = this.questionSetInfo;
     data['batch_info'] = this.batchInfo;

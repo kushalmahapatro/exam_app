@@ -23,7 +23,6 @@ class _VivaAndTheoryManagementState extends State<VivaAndTheoryManagement> {
     LocalStorageData.instructionLanguage= jsonDecode(GetAssessorLoginModel.response.eventData.instructionLanguage);
     String hindi = LocalStorageData.instructionLanguage['hindi'];
     print("hindi language"+hindi);
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Viva and Theory Management"),
