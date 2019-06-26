@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:exam_app/screens/VivaAndTheoryManagement.dart';
 
 class ElapsedTime {
   final int hundreds;
@@ -16,7 +17,7 @@ class ElapsedTime {
 class Dependencies {
 
   final List<ValueChanged<ElapsedTime>> timerListeners = <ValueChanged<ElapsedTime>>[];
-  final TextStyle textStyle = const TextStyle(fontSize: 90.0, fontFamily: "Bebas Neue");
+  final TextStyle textStyle = const TextStyle(fontSize: 30.0, fontFamily: "Bebas Neue");
   final Stopwatch stopwatch = new Stopwatch();
   final int timerMillisecondsRefreshRate = 30;
 }
@@ -51,7 +52,7 @@ class TimerPageState extends State<TimerPage> {
   }
 
   Widget buildFloatingButton(String text, VoidCallback callback) {
-    TextStyle roundTextStyle = const TextStyle(fontSize: 16.0, color: Colors.white);
+    TextStyle roundTextStyle = const TextStyle(fontSize: 20.0, color: Colors.white);
     return new FloatingActionButton(
       child: new Text(text, style: roundTextStyle),
       onPressed: callback);
@@ -59,13 +60,14 @@ class TimerPageState extends State<TimerPage> {
 
   @override
   Widget build(BuildContext context) {
+    dependencies.stopwatch.start();
     return new Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         new Expanded(
           child: new TimerText(dependencies: dependencies),
         ),
-        new Expanded(
+        /*new Expanded(
           flex: 0,
           child: new Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -77,7 +79,7 @@ class TimerPageState extends State<TimerPage> {
               ],
             ),
           ),
-        ),
+        ),*/
       ],
     );
   }
@@ -95,10 +97,13 @@ class TimerTextState extends State<TimerText> {
   final Dependencies dependencies;
   Timer timer;
   int milliseconds;
+  int inMinutes;
 
   @override
   void initState() {
     timer = new Timer.periodic(new Duration(milliseconds: dependencies.timerMillisecondsRefreshRate), callback);
+    inMinutes = Duration(hours: 1).inMinutes;//Calculate in min the exam duration
+    inMinutes=inMinutes;
     super.initState();
   }
 
@@ -120,6 +125,12 @@ class TimerTextState extends State<TimerText> {
         seconds: seconds,
         minutes: minutes,
       );
+      //print("match mi"+inMinutes.toString()+"=="+minutes.toString());
+      //Check if stop watch minute match with duration of exam then cancel the exam and send to vivamangement page
+      if(inMinutes==minutes){
+        dependencies.stopwatch.stop();
+        //Navigator.push(context, new MaterialPageRoute(builder: (c)=>VivaAndTheoryManagement()));
+      }
       for (final listener in dependencies.timerListeners) {
         listener(elapsedTime);
       }
@@ -133,13 +144,13 @@ class TimerTextState extends State<TimerText> {
       children: <Widget>[
           new RepaintBoundary(
             child: new SizedBox(
-              height: 72.0,
+              height: 50.0,
               child: new MinutesAndSeconds(dependencies: dependencies),
             ),
           ),
           new RepaintBoundary(
             child: new SizedBox(
-              height: 72.0,
+              height: 50.0,
               child: new Hundreds(dependencies: dependencies),
             ),
           ),
@@ -181,7 +192,7 @@ class MinutesAndSecondsState extends State<MinutesAndSeconds> {
   Widget build(BuildContext context) {
     String minutesStr = (minutes % 60).toString().padLeft(2, '0');
     String secondsStr = (seconds % 60).toString().padLeft(2, '0');
-    return new Text('$minutesStr:$secondsStr.', style: dependencies.textStyle);
+    return new Text('$minutesStr:$secondsStr.', style:TextStyle(fontSize: 50.0));
   }
 }
 
@@ -215,6 +226,6 @@ class HundredsState extends State<Hundreds> {
   @override
   Widget build(BuildContext context) {
     String hundredsStr = (hundreds % 100).toString().padLeft(2, '0');
-    return new Text(hundredsStr, style: dependencies.textStyle);
+    return new Text(hundredsStr,style:TextStyle(fontSize: 50.0));
   }
 }

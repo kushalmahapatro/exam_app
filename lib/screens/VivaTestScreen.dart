@@ -3,6 +3,12 @@ import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:exam_app/sdk/api/GetAssessorLogin.dart';
 import 'package:exam_app/model/LocalStorageData.dart';
 //import 'package:exam_app/model/VivaQuestionjson.dart';
+import 'package:exam_app/screens/ConductViva.dart';
+import 'package:exam_app/model/Vivajson.dart';
+import 'package:exam_app/model/CalculateTimeJson.dart';
+import 'package:exam_app/screens/timer_page.dart';
+import 'package:exam_app/sdk/api/GetVivaSyncApi.dart';
+import 'package:exam_app/controllers/VivaSyncAPiControler.dart';
 //import 'package:exam_app/model/VivaStepjson.dart';
 
 class VivaTestScreen extends StatefulWidget {
@@ -10,18 +16,35 @@ class VivaTestScreen extends StatefulWidget {
   _VivaTestScreenState createState() => _VivaTestScreenState();
 }
 
-class _VivaTestScreenState extends State<VivaTestScreen> {
+class _VivaTestScreenState extends State<VivaTestScreen> implements VIvaSyncApiListener {
+  vivaSyncApiController controller;
   int mainindex;
+  String next_btn_text="Next";
   int stdposition;
   //List<Vivastepjson> stepjson=new List();
   VivaQuestions currentQuestion;
   List mainquestionjson=new List();
   List finalmainquestionjson=new List();
+  List<VivaJson> viva_json;
+  List final_vivajson=new List();
+  List<CalculateTimejson> calulate_time_json;
   @override
   initState(){
     super.initState();
+    DateTime now = DateTime.now();
+    print("curr date=="+now.toString());
+    LocalStorageData.start_time=now.toString();
+    viva_json=new List();
+    calulate_time_json=new List();
     stdposition=LocalStorageData.std_position;
     mainindex=0;
+    for(int i=0;i<GetAssessorLoginModel.response.eventData.students[stdposition].vivaQuestions.length;i++){
+      viva_json.add(VivaJson());
+      if(i==0){
+        calulate_time_json.add(CalculateTimejson("", ""));
+      }
+    }
+    next_btn_text="Next";
   }
 
   _init() {
@@ -66,6 +89,37 @@ class _VivaTestScreenState extends State<VivaTestScreen> {
               padding: EdgeInsets.all(10),
               onSelected: (String selected) => setState((){
                 currentStepQuestion.selectedOption = selected;
+                String steps_length=currentQuestion.steps.length.toString();
+                double steps_len=double.parse(steps_length);
+                double qn_marks = (currentQuestion.marks / steps_len) * 1;
+
+                if(currentStepQuestion.getSelectedOptionIndex()==0) {
+                  double selected_mark = 0 * qn_marks / 100;
+                  currentQuestion.steps[index].steps_mark=selected_mark;
+                  print("steps mark=="+currentQuestion.steps[index].steps_mark.toString());
+
+                } else if(currentStepQuestion.getSelectedOptionIndex()==1){
+                  double selected_mark = 25 * qn_marks / 100;
+                  currentQuestion.steps[index].steps_mark=selected_mark;
+                  print("steps mark=="+currentQuestion.steps[index].steps_mark.toString());
+
+                } else if(currentStepQuestion.getSelectedOptionIndex()==2){
+                  double selected_mark = 50 * qn_marks / 100;
+                  currentQuestion.steps[index].steps_mark=selected_mark;
+                  print("steps mark=="+currentQuestion.steps[index].steps_mark.toString());
+
+                }else if(currentStepQuestion.getSelectedOptionIndex()==3){
+                  double selected_mark = 75 * qn_marks / 100;
+                  currentQuestion.steps[index].steps_mark=selected_mark;
+                  print("steps mark=="+currentQuestion.steps[index].steps_mark.toString());
+
+                }else if(currentStepQuestion.getSelectedOptionIndex()==4){
+                  double selected_mark = 100 * qn_marks / 100;
+                  currentQuestion.steps[index].steps_mark=selected_mark;
+                  print("steps mark=="+currentQuestion.steps[index].steps_mark.toString());
+                }
+
+
 //                stepjson.qstn_answer=selected;
 //                stepjson.obtained_marks=0.0;
 //                mainquestionjson.add(stepjson);
@@ -94,7 +148,7 @@ class _VivaTestScreenState extends State<VivaTestScreen> {
    // print("main json=="+mainquestionjson.toString());
     return Scaffold(
       appBar: AppBar(
-        title: Text("VivaTestScreen"),
+        title: new TimerPage(),
       ),
       body: ListView(
         scrollDirection: Axis.vertical,
@@ -123,7 +177,7 @@ class _VivaTestScreenState extends State<VivaTestScreen> {
             padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text("Q"+mainindex.toString(),style: TextStyle(
+              child: Text("Q"+(mainindex+1).toString(),style: TextStyle(
                 fontSize:25,
                 fontWeight:FontWeight.bold,
 
@@ -158,6 +212,7 @@ class _VivaTestScreenState extends State<VivaTestScreen> {
                     if(mainindex>0) {
                       setState(() {
                         mainindex = mainindex-1;
+                        next_btn_text="Next";
                       });
                     }
 //                setState(() {
@@ -178,12 +233,44 @@ class _VivaTestScreenState extends State<VivaTestScreen> {
                 padding: EdgeInsets.all(10),
                 child: MaterialButton(
                   onPressed: (){
+                   setState(() {
+                    /*if(mainindex==GetAssessorLoginModel.response.eventData.students[stdposition].vivaQuestions.length-1){
+                        next_btn_text="Submit";
+                    }*/
                     if(mainindex<(GetAssessorLoginModel.response.eventData.students[stdposition].vivaQuestions.length-1)) {
-                      setState(() {
-                        mainindex = mainindex+1;
-                      });
+                      double totalmarks=0.0;
+                      for(int i=0;i<currentQuestion.steps.length;i++){
+                        totalmarks=totalmarks+currentQuestion.steps[i].steps_mark;
+                      }
+                       currentQuestion.obtained_marks=totalmarks;
+                      viva_json[mainindex].question_id=currentQuestion.id;
+                      viva_json[mainindex].marks=currentQuestion.marks;
+                      viva_json[mainindex].obtained_marks=currentQuestion.obtained_marks;
+                      if(mainindex==GetAssessorLoginModel.response.eventData.students[stdposition].vivaQuestions.length-2){
+                        next_btn_text="Submit";
+                      }
+                        mainindex = mainindex + 1;
+                    }else{
+                      double totalmarks=0.0;
+                      for(int i=0;i<currentQuestion.steps.length;i++){
+                        totalmarks=totalmarks+currentQuestion.steps[i].steps_mark;
+                      }
+                      currentQuestion.obtained_marks=totalmarks;
+                      viva_json[mainindex].question_id=currentQuestion.id;
+                      viva_json[mainindex].marks=currentQuestion.marks;
+                      viva_json[mainindex].obtained_marks=currentQuestion.obtained_marks;
+                      DateTime end_time = DateTime.now();
+                      calulate_time_json[0].start_timestamp=LocalStorageData.start_time;
+                      calulate_time_json[0].end_timestamp=end_time.toString();
+                      calulate_time_json.toString();
+                      final_vivajson.add(calulate_time_json);
+                      final_vivajson.add(viva_json.toString());
+                      print("Final json=="+final_vivajson.toString());
+
+                      controller = vivaSyncApiController(listener: this);
+                      controller.callApi(stdposition, final_vivajson.toString());
                     }
-//                    setState(() {
+                       });//                    setState(() {
 //                      if(mainindex<GetAssessorLoginModel.response.eventData.students[stdposition].vivaQuestions.length-1)
 //                      mainindex=mainindex+1;
 //                    });
@@ -194,7 +281,7 @@ class _VivaTestScreenState extends State<VivaTestScreen> {
                   minWidth: 100,
                   height: 50,
                   color: Colors.blue,
-                  child: Text("Next"),
+                  child: Text(next_btn_text),
                 ),
               ),
             ],
@@ -203,6 +290,25 @@ class _VivaTestScreenState extends State<VivaTestScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void onApiFailure({Failures failure}) {
+    // TODO: implement onApiFailure
+  }
+
+  @override
+  void onApiSuccess({VivaSyncApiModel model}) {
+    // TODO: implement onApiSuccess
+    if(model.responseCode==200){
+      GetAssessorLoginModel.response.eventData.students[stdposition].vivaStatus="Finished";
+      Navigator.push(context, new MaterialPageRoute(builder: (c)=>ConductViva()));
+    }
+  }
+
+  @override
+  void routeTo({Routes route}) {
+    // TODO: implement routeTo
   }
 
 }

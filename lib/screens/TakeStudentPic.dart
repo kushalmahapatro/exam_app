@@ -67,6 +67,9 @@ class UserOptionsState extends State<UserOptions> {
       //requestPermission();
       student_code=GetAssessorLoginModel.response.eventData.students[stdposition].studentCode;
       dir = await getExternalStorageDirectory();
+      var deletedir =
+      await new Directory('${dir.path}/Assesmentportal/'+student_code+'').create(recursive: true);
+      deletedir.deleteSync(recursive: true);///
       knockDir =
       await new Directory('${dir.path}/Assesmentportal/'+student_code+'').create(recursive: true);
       print("directory=="+knockDir.toString());
@@ -88,6 +91,9 @@ class UserOptionsState extends State<UserOptions> {
         maxHeight: 200.0,
         maxWidth: 200.0,
       );
+      dir = await getExternalStorageDirectory();
+      knockDir =
+      await new Directory('${dir.path}/Assesmentportal/'+student_code+'').create(recursive: true);
       final String path = dir.path;
       final File finalImage = await profileFile.copy('${knockDir.path}/profile.png');
       print("You selected camera image : " + profileFile.path);

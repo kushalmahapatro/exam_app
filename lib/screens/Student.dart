@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:exam_app/controllers/AssessorLoginController.dart';
 import 'package:exam_app/controllers/AssessorPageController.dart';
 import 'package:exam_app/sdk/api/GetAssessor.dart';
@@ -8,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:exam_app/utils/PreferenceManager.dart';
 import 'package:exam_app/model/LocalStorageData.dart';
 import 'dart:convert';
+
+import 'package:path_provider/path_provider.dart';
 
 
 class Student extends StatefulWidget {
@@ -26,20 +30,23 @@ class _StudentState extends State<Student> implements AssessorPageListener , Ass
   bool apiCalled = false;
   GetAssessorModel apiModel;
   List<UserId> id= new List();
+  List<GetAssessorLoginModel> student_response= new List();
   List<String> instruction_lang=new List();
   int _id,_lang_id;
-  String dropdownValue = 'hindi';
+  String dropdownValue = 'English';
   String pin;
   BuildContext _scaffoldContext;
   Scaffold scaffold;
+  var dir,knockDir;
   PreferenceManager preferenceManager=new PreferenceManager();
 
 
 
-  _StudentState(){
+  _StudentState()  {
    // controller = AssessorPageController(listener: this);
     //loginController = AssessorLoginController(listener: this);
    // controller.callAPI();
+    instruction_lang.add("English");
     instruction_lang.add("hindi");
     instruction_lang.add("bengali");
     instruction_lang.add("tamil");
@@ -52,10 +59,11 @@ class _StudentState extends State<Student> implements AssessorPageListener , Ass
 
     for (int i=0; i< GetAssessorLoginModel.response.eventData.students.length ;i++){
       if(GetAssessorLoginModel.response.eventData.students[i].deviceId!="") {
-
-        id.add(UserId(GetAssessorLoginModel.response.eventData.students[i].id,
-            GetAssessorLoginModel.response.eventData.students[i].name));
-      }
+        if(GetAssessorLoginModel.response.eventData.students[i].examStatus!="Over") {
+          id.add(UserId(GetAssessorLoginModel.response.eventData.students[i].id,
+              GetAssessorLoginModel.response.eventData.students[i].name));
+        }
+        }
     }
     apiCalled = true;
   }
@@ -136,7 +144,8 @@ class _StudentState extends State<Student> implements AssessorPageListener , Ass
                     LocalStorageData.selected_lang=dropdownValue;
                   });
                 },
-                items: <String>['hindi', 'bengali', 'tamil','telugu','gujarati','kannada','malayalam','marathi','nepali']
+                items: <String>['English','hindi', 'bengali', 'tamil','telugu','gujarati',
+                'kannada','malayalam','marathi','nepali']
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -244,7 +253,11 @@ class _StudentState extends State<Student> implements AssessorPageListener , Ass
 
   @override
   void onAPISuccess({GetAssessorModel model}) {
-    setState(() {
+    setState(() async {
+     // dir = await getExternalStorageDirectory();
+      //knockDir = await new Directory('${dir.path}/ExamApp/my_file.txt').create(recursive: true);
+      print("path== ");
+      //_write("hiii");
       apiModel = model;
       for (int i=0; i< model.response.length ;i++){
         id.add(UserId(model.response[i].id, model.response[i].username));
@@ -252,20 +265,37 @@ class _StudentState extends State<Student> implements AssessorPageListener , Ass
       apiCalled = true;
     });
   }
+  _write(String text) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${knockDir.path}/my_file.txt');
+    await file.writeAsString(text);
+  }
+  Future<String> _read() async {
+    String text;
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${knockDir.path}/my_file.txt');
+      text = await file.readAsString();
+    } catch (e) {
+      print("Couldn't read file");
+    }
+    return text;
+  }
 
   @override
   void onLoginFailure({String message}) {
   }
 
   @override
-  void onLoginSuccess({GetAssessorLoginModel model}) {
+  Future onLoginSuccess({GetAssessorLoginModel model}) async {
+   // _read();
     Navigator.push(context, new MaterialPageRoute(builder: (c)=> new TakeStudentPic()));
     Scaffold.of(_scaffoldContext).showSnackBar( SnackBar(
         content:  Text(GetAssessorLoginModel.responseMessage)
     ));
   }
 
-  void loginApiCall(int position,String pin,String name) {
+  Future loginApiCall(int position,String pin,String name) async {
    /* for(int i=0;i<GetAssessorLoginModel.response.eventData.students.length;i++){
       if(GetAssessorLoginModel.response.eventData.students[i].id==std_id){
         print("value of i=="+GetAssessorLoginModel.response.eventData.students[i].id);
@@ -285,6 +315,14 @@ class _StudentState extends State<Student> implements AssessorPageListener , Ass
         print("not match studnet pin");
       }
     }*/
+
+    dir = await getExternalStorageDirectory();
+    knockDir = await new Directory('${dir.path}/ExamApp/').create(recursive: true);
+    print("path== "+dir.path);
+
+    _write(student_response.toString());
+    String jsonread=_read() as String;
+    print("json read=="+jsonread.toString());
    int selected_position;
     for(int i=0;i<GetAssessorLoginModel.response.eventData.students.length;i++){
       if(GetAssessorLoginModel.response.eventData.students[i].name==name){

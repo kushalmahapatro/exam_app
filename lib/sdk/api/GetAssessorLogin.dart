@@ -82,6 +82,11 @@ class GetAssessorLoginModel {
     }
     return data;
   }
+  @override
+  String toString() {
+    // TODO: implement toString
+    return super.toString();
+  }
 }
 
 class Response {
@@ -107,6 +112,11 @@ class Response {
       data['event_data'] = this.eventData.toJson();
     }
     return data;
+  }
+  @override
+  String toString() {
+    // TODO: implement toString
+    return super.toString();
   }
 }
 
@@ -505,6 +515,7 @@ class VivaQuestions {
   String question;
   String language;
   double marks;
+  double obtained_marks;
   String weightage;
   String createdDate;
   String modifiedDate;
@@ -643,16 +654,16 @@ class SingleLanguageQuestion {
   int getSelectedOptionIndex() {
     if(selectedOption!=null) {
       if(optiona == selectedOption) {
-        return 0;
-      }
-      else if(optionb == selectedOption) {
         return 1;
       }
-      else if(optionc == selectedOption) {
+      else if(optionb == selectedOption) {
         return 2;
       }
-      else if(optiond == selectedOption) {
+      else if(optionc == selectedOption) {
         return 3;
+      }
+      else if(optiond == selectedOption) {
+        return 4;
       }
     }
     return -1;
@@ -665,7 +676,7 @@ class SingleLanguageStepQuestion {
   final String option2 = "Poor";
   final String option3 = "Good";
   final String option4 = "Very Good";
-  final String option5 = "Excellent";
+  final String option5 = " Excellent";
   String selectedOption;
 
 
@@ -705,6 +716,7 @@ class Steps {
   String vivaQuestionId;
   String step;
   String language;
+  double steps_mark;
   Map<String, SingleLanguageStepQuestion> _languageStepQuestions;
 
   Steps({this.id, this.vivaQuestionId, this.step, this.language});

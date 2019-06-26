@@ -86,6 +86,9 @@ class UserOptionsState extends State<UserOptions> {
         maxHeight: 200.0,
         maxWidth: 200.0,
       );
+      dir = await getExternalStorageDirectory();
+      knockDir =
+      await new Directory('${dir.path}/Assesmentportal/'+student_code+'').create(recursive: true);
       final String path = dir.path;
       final File finalImage = await profileFile.copy('${knockDir.path}/viva_profile.png');
       print("You selected camera image : " + profileFile.path);

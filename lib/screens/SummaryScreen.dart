@@ -3,30 +3,35 @@ import 'package:flutter/material.dart';
 import 'package:exam_app/model/QuestionStatus.dart';
 import 'package:exam_app/model/Questionjson.dart';
 import 'package:exam_app/screens/VivaAndTheoryManagement.dart';
+import 'package:exam_app/model/CalculateTimeJson.dart';
 import 'package:exam_app/sdk/api/GetAssessorLogin.dart';
 import 'package:exam_app/model/LocalStorageData.dart';
 import 'package:exam_app/sdk/api/GetSyncApi.dart';
 import 'package:exam_app/controllers/SyncAPiControler.dart';
+import 'package:exam_app/screens/timer_page.dart';
 
 class SummaryScreen extends StatefulWidget {
   List<QuestionStatus> question_status;
   List<QuestionJson> question_json;
+  List<CalculateTimejson> calulate_time_json;
   List<Color> select_color;
-  SummaryScreen(this.question_status,this.question_json,this.select_color);
+  SummaryScreen(this.question_status,this.question_json,this.calulate_time_json,this.select_color);
 
   @override
-  _SummaryScreenState createState() => _SummaryScreenState(question_status,question_json,select_color);
+  _SummaryScreenState createState() => _SummaryScreenState(question_status,question_json,calulate_time_json,select_color);
 }
 
 class _SummaryScreenState extends State<SummaryScreen> implements SyncApiListener{
   SyncApiController controller;
   List<QuestionStatus> question_status;
   List<QuestionJson> question_json;
+  List<CalculateTimejson> calulate_time_json;
+  List final_json=new List();
   List<Color> select_color;
   double height;
   double actual_height;
   int stdposition;
-  _SummaryScreenState(this.question_status,this.question_json,this.select_color);
+  _SummaryScreenState(this.question_status,this.question_json,this.calulate_time_json,this.select_color);
 
 
   @override
@@ -45,6 +50,7 @@ class _SummaryScreenState extends State<SummaryScreen> implements SyncApiListene
 
   @override
   Widget build(BuildContext context) {
+
     height = MediaQuery.of(context).size.height;
     double percentage_height=0.30*height;
     actual_height=height-percentage_height;
@@ -106,8 +112,16 @@ class _SummaryScreenState extends State<SummaryScreen> implements SyncApiListene
             child: MaterialButton(
               onPressed: (){
                 print("question status =="+question_json.toString() );
+                DateTime end_time = DateTime.now();
+                calulate_time_json[0].start_timestamp=LocalStorageData.start_time;
+                calulate_time_json[0].end_timestamp=end_time.toString();
+                calulate_time_json.toString();
+                final_json.add(calulate_time_json);
+                final_json.add(question_json);
+                final_json.toString();
+                print("TIme json="+final_json.toString());
                 controller = SyncApiController(listener: this);
-                controller.callApi(stdposition, question_json.toString());
+                controller.callApi(stdposition, final_json.toString());
                 //Navigator.push(context, new MaterialPageRoute(builder: (c)=>VivaAndTheoryManagement()));
               },
               minWidth: 100,
@@ -126,7 +140,7 @@ class _SummaryScreenState extends State<SummaryScreen> implements SyncApiListene
       children: <Widget>[
         Padding(
           padding: EdgeInsets.all(20),
-          child: Text(index.toString()),
+          child: Text((index+1).toString()),
         ),
         Padding(
           padding: EdgeInsets.all(20),
@@ -148,7 +162,7 @@ class _SummaryScreenState extends State<SummaryScreen> implements SyncApiListene
                 Navigator.pop(context,index);
               },
               child: new Center(
-                child: new Text("Change"+index.toString()),
+                child: new Text("Change"+(index+1).toString()),
               ),
             ),
           ),
@@ -166,6 +180,7 @@ class _SummaryScreenState extends State<SummaryScreen> implements SyncApiListene
   void onApiSuccess({SyncApiModel model}) {
     // TODO: implement onApiSuccess
     if(model.responseCode==200){
+      GetAssessorLoginModel.response.eventData.students[stdposition].examStatus="Over";
       Navigator.push(context, new MaterialPageRoute(builder: (c)=>VivaAndTheoryManagement()));
    }
   }

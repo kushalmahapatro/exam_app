@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'dart:io' as io;
 import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -216,7 +216,7 @@ class _VivaVideoScreenState extends State<VivaVideoScreen> {
     try {
       await controller.initialize();
     } on CameraException catch (e) {
-      _showCameraException(e);
+      //_showCameraException(e);
     }
 
     if (mounted) {
@@ -300,12 +300,19 @@ class _VivaVideoScreenState extends State<VivaVideoScreen> {
     await Directory(videoDirectory).create(recursive: true);
     final String currentTime = DateTime.now().millisecondsSinceEpoch.toString();
     final String filePath = '${dir.path}/Assesmentportal/'+student_code+'/vivaVideo.mp4';
+    //var knockDir =Directory('${dir.path}/Assesmentportal/'+student_code+'/vivaVideo.mp4');
+   // bool exists = await Directory(filePath).exists();
+   // print("dir exist=="+exists.toString());
+   // if(exists){
+    //  knockDir.deleteSync(recursive: true);
+    //}
+
 
     try {
       await controller.startVideoRecording(filePath);
       videoPath = filePath;
     } on CameraException catch (e) {
-      _showCameraException(e);
+      //_showCameraException(e);
       return null;
     }
 
@@ -320,7 +327,7 @@ class _VivaVideoScreenState extends State<VivaVideoScreen> {
     try {
       await controller.stopVideoRecording();
     } on CameraException catch (e) {
-      _showCameraException(e);
+      //_showCameraException(e);
       return null;
     }
   }

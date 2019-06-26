@@ -1,19 +1,21 @@
-class QuestionJson {
-  String qstn_id="";
-  String qstn_answer="";
-  String reviewed;
+class VivaJson{
+  String question_id="";
+  double marks=0.0;
+  double obtained_marks=0.0;
 
-  QuestionJson({this.qstn_id, this.qstn_answer});
+  VivaJson({this.question_id, this.marks,this.obtained_marks});
 
-  QuestionJson.fromJson(Map<String, dynamic> json) {
-    qstn_id = json['qstn_id'];
-    qstn_answer = json['qstn_answer'];
+  VivaJson.fromJson(Map<String, dynamic> json) {
+    question_id = json['question_id'];
+    marks = json['marks'];
+    obtained_marks = json['obtained_marks'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['question_id'] = this.qstn_id;
-    data['answer'] = this.qstn_answer;
+    data['question_id'] = this.question_id;
+    data['marks'] = this.marks;
+    data['obtained_marks'] = this.obtained_marks;
     return data;
   }
   @override

@@ -131,45 +131,50 @@ class _AddDeviceState extends State<AddDevice> implements AddDeviceListener,Remo
   }
 
   Widget _getItemUI(BuildContext context, int index) {
-    return new Card(
-      child: new Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(10.0),
-            child:  Text(GetAssessorLoginModel.response.eventData.students[index].name, style:
-            TextStyle(fontSize: 20.0)
+    if(GetAssessorLoginModel.response.eventData.students[index].examStatus=="Over"){
+      return new Card();
+    }else{
+      return new Card(
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(10.0),
+              child:  Text(
+                  GetAssessorLoginModel.response.eventData.students[index].name, style:
+              TextStyle(fontSize: 20.0)
+              ),
             ),
-          ),
 
-          Spacer(flex: 20,),
-          Padding(
+            Spacer(flex: 20,),
+            Padding(
+              padding: EdgeInsets.all(10.0),
+              child: MaterialButton(
+                  minWidth: 100,
+                  height: 50,
+                  color: Colors.blue,
+                  onPressed: (){
+                    setState(() {
+                      print("selected btn text"+listbtntext[index].toString());
+                      if(listbtntext[index].toString()=="Add"){
+                        callAddDeviceAPi(index);
+                      }else{
+                        callRemoveDeviceAPi(index);
+                      }
 
-            padding: EdgeInsets.all(10.0),
-            child: MaterialButton(
-                minWidth: 100,
-                height: 50,
-                color: Colors.blue,
-              onPressed: (){
-                setState(() {
-                    print("selected btn text"+listbtntext[index].toString());
-                    if(listbtntext[index].toString()=="Add"){
-                      callAddDeviceAPi(index);
-                    }else{
-                      callRemoveDeviceAPi(index);
-                    }
-
-                });
-              },
-              child:Text(listbtntext[index], style: TextStyle(color: Colors.white,fontSize: 15.0))
+                    });
+                  },
+                  child:Text(listbtntext[index], style: TextStyle(color: Colors.white,fontSize: 15.0))
+              ),
             ),
-          ),
 
-        ],
-      ),
+          ],
+        ),
 
-    );
+      );
+    }
+
   }
   static Future<List<String>> getDeviceDetails() async {
     String deviceName;

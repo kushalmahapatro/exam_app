@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:exam_app/utils/ColorSwatch.dart';
 import 'package:exam_app/model/city.dart';
 import 'package:exam_app/screens/TakeVivaStudentPic.dart';
+import 'package:exam_app/model/LocalStorageData.dart';
 
 class ConductViva extends StatefulWidget {
   GetAssessorLoginModel model;
@@ -14,8 +15,24 @@ class ConductViva extends StatefulWidget {
 class _ConductVivaState extends State<ConductViva> {
   BuildContext _scaffoldContext;
   GetAssessorLoginModel model;
+  List<String> conduct_btn_text;
 
   _ConductVivaState(this.model);
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    conduct_btn_text=new List(GetAssessorLoginModel.response.eventData.students.length);
+    for (int i =0 ; i< conduct_btn_text.length; i++) {
+      if (GetAssessorLoginModel.response.eventData.students[i].vivaStatus =="Finished") {
+        conduct_btn_text[i] = "Finished";
+      } else {
+        conduct_btn_text[i] = "Conduct";
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     _scaffoldContext = context;
@@ -63,9 +80,17 @@ class _ConductVivaState extends State<ConductViva> {
             padding: EdgeInsets.all(10.0),
             child: RaisedButton(
               onPressed: (){
-                Navigator.push(context, new MaterialPageRoute(builder: (c)=>TakeVivaStudentPic()));
+                if(GetAssessorLoginModel.response.eventData.students[index].vivaStatus=="Finished"){
+                  setState(() {
+                    conduct_btn_text[index] = "Finished";
+                  });
+                }else{
+                  LocalStorageData.std_position=index;
+                  Navigator.push(context, new MaterialPageRoute(builder: (c)=>TakeVivaStudentPic()));
+                }
+
               },
-              child: Text("Conduct",
+              child: Text(conduct_btn_text[index],
                   style: TextStyle(
                       color: Colors.black
                   )

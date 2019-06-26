@@ -1,19 +1,16 @@
-class QuestionJson {
-  String qstn_id="";
-  String qstn_answer="";
-  String reviewed;
-
-  QuestionJson({this.qstn_id, this.qstn_answer});
-
-  QuestionJson.fromJson(Map<String, dynamic> json) {
-    qstn_id = json['qstn_id'];
-    qstn_answer = json['qstn_answer'];
+class CalculateTimejson{
+  String start_timestamp="";
+  String end_timestamp="";
+  CalculateTimejson(this.start_timestamp,this.end_timestamp);
+  CalculateTimejson.fromJson(Map<String, dynamic> json) {
+    start_timestamp = json['start_timestamp'];
+    end_timestamp = json['end_timestamp'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['question_id'] = this.qstn_id;
-    data['answer'] = this.qstn_answer;
+    data['start_timestamp'] = this.start_timestamp;
+    data['end_timestamp'] = this.end_timestamp;
     return data;
   }
   @override

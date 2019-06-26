@@ -1,19 +1,19 @@
-import 'package:exam_app/sdk/api/GetSyncApi.dart';
+import 'package:exam_app/sdk/api/GetVivaSyncApi.dart';
 import 'package:exam_app/sdk/api/GetAssessorLogin.dart';
 import 'package:meta/meta.dart';
 import 'package:exam_app/utils/Utils.dart';
 
-class SyncApiController  {
-  final SyncApiListener listener;
+class vivaSyncApiController  {
+  final VIvaSyncApiListener listener;
 
-  SyncApiController({@required this.listener});
+  vivaSyncApiController({@required this.listener});
 
   void callApi(int index,String question_json) async {
     try {
-      SyncApiModel getSettings = await GetSyncApiModel(
+      VivaSyncApiModel getSettings = await GetVivaSyncApiModel(
           {'Client-Service': 'frontend-client', 'Auth-Key' : 'simplerestapi', 'Content-Type':'application/x-www-form-urlencoded'
            ,'Authorization':GetAssessorLoginModel.response.token,'User-ID':GetAssessorLoginModel.response.userId},
-          {'module' : 'events', 'service' : 'syncTheory','event_id' : GetAssessorLoginModel.response.eventData.id,
+          {'module' : 'events', 'service' : 'syncViva','event_id' : GetAssessorLoginModel.response.eventData.id,
             'student_code' : GetAssessorLoginModel.response.eventData.students[index].studentCode,
             'student_question_array' : question_json}
           );
@@ -27,9 +27,9 @@ class SyncApiController  {
 
 }
 
-abstract class SyncApiListener {
+abstract class VIvaSyncApiListener {
   void onApiFailure({@required Failures failure});
-  void onApiSuccess({@required SyncApiModel model});
+  void onApiSuccess({@required VivaSyncApiModel model});
   void routeTo({@required Routes route});
 }
 

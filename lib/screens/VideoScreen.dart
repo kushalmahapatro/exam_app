@@ -216,7 +216,7 @@ class _VideoScreenState extends State<VideoScreen> {
     try {
       await controller.initialize();
     } on CameraException catch (e) {
-      _showCameraException(e);
+      //_showCameraException(e);
     }
 
     if (mounted) {
@@ -300,12 +300,19 @@ class _VideoScreenState extends State<VideoScreen> {
     await Directory(videoDirectory).create(recursive: true);
     final String currentTime = DateTime.now().millisecondsSinceEpoch.toString();
     final String filePath = '${dir.path}/Assesmentportal/'+student_code+'/theoryvideo.mp4';
+   // bool exists = await knockDir.exists();
+    //print("dir exist=="+exists.toString());
+    //if(exists){
+      //knockDir.deleteSync(recursive: true);
+   // }
+    //await new Directory('${dir.path}/Assesmentportal/'+student_code+'').create(recursive: true);
+
 
     try {
       await controller.startVideoRecording(filePath);
       videoPath = filePath;
     } on CameraException catch (e) {
-      _showCameraException(e);
+      //_showCameraException(e);
       return null;
     }
 
@@ -320,7 +327,7 @@ class _VideoScreenState extends State<VideoScreen> {
     try {
       await controller.stopVideoRecording();
     } on CameraException catch (e) {
-      _showCameraException(e);
+      //_showCameraException(e);
       return null;
     }
   }
