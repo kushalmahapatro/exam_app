@@ -357,10 +357,15 @@ class Students {
     if (this.theoryQuestions != null) {
       data['theory_questions'] =
           this.theoryQuestions.map((v) => v.toJson()).toList();
+    }else{
+      data['theory_questions'] = List<TheoryQuestions>();
     }
     if (this.vivaQuestions != null) {
       data['viva_questions'] =
           this.vivaQuestions.map((v) => v.toJson()).toList();
+    }
+    else{
+      data['viva_questions'] = List<VivaQuestions>();
     }
     return data;
   }
@@ -608,6 +613,8 @@ class VivaQuestions {
     data['assigned_id'] = this.assignedId;
     if (this.steps != null) {
       data['steps'] = this.steps.map((v) => v.toJson()).toList();
+    }else{
+      data['steps'] =List<Steps>();
     }
     return data;
   }
