@@ -1,16 +1,52 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:exam_app/sdk/ApiUtils.dart';
 import 'package:exam_app/utils/Constants.dart';
+import 'package:path_provider/path_provider.dart';
 
 Future<GetAssessorLoginModel> getAssessorLoginAPI(
     Map<String, String> params, Map<String, String> body) async {
   try {
-    return GetAssessorLoginModel.fromJson(await request_POST_header(
-        parameters: params, body: body, url: BASE_URL));
+    //Setup Directory
+    String jsonread= await _readJSON();
+    jsonread = jsonread.trim();
+
+    GetAssessorLoginModel model;
+    GetAssessorLoginModel.clear();
+    if(jsonread.length>0 && jsonread.startsWith("{") && jsonread.endsWith("}")) {
+      model = GetAssessorLoginModel.getInstance(jsonread);
+    }
+    else {
+      model = GetAssessorLoginModel.getInstance(await request_POST_header(
+          parameters: params, body: body, url: BASE_URL));
+      await _writeJSON(model.toJson().toString());
+      print("json read=="+jsonread.toString());
+    }
+    return model;
   } catch (e) {
     print(e);
   }
   return null;
+}
+
+_writeJSON(String text) async {
+  final Directory dir = await getExternalStorageDirectory();
+  final Directory knockDir = await new Directory('${dir.path}/ExamApp/').create(recursive: true);
+  final file = File('${knockDir.path}/my_file.txt');
+  await file.writeAsString(text);
+}
+Future<String> _readJSON() async {
+  String text;
+  try {
+    final Directory dir = await getExternalStorageDirectory();
+    final Directory knockDir = await new Directory('${dir.path}/ExamApp/').create(recursive: true);
+    final file = File('${knockDir.path}/my_file.txt');
+    text = await file.readAsString();
+  } catch (e) {
+    print("Couldn't read file");
+  }
+  text ??= "";
+  return text;
 }
 /*class GetAssessorLoginModel {
   int responseCode;
@@ -83,14 +119,25 @@ class GetAssessorLoginModel {
     return data;
   }
 
+  Future<bool> save() async {
+    try {
+      await _writeJSON("");
+      await _writeJSON(toJson().toString());
+      return true;
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
   static GetAssessorLoginModel getInstance(String jsonValue) {
     if(_instance==null) {
-      _instance = GetAssessorLoginModel.fromJson(jsonValue);
+      _instance = GetAssessorLoginModel.fromJson(jsonValue??"{}");
     }
     return _instance;
   }
 
-  clear() {
+  static clear() {
     _instance = null;
   }
 
